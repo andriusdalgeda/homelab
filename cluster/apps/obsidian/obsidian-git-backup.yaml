@@ -38,6 +38,10 @@ spec:
 
                   cd /repo
 
+                  echo "Configuring git identity..."
+                  git config user.name "$GIT_AUTHOR_NAME"
+                  git config user.email "$GIT_AUTHOR_EMAIL"
+
                   echo "Checking for changes..."
                   git add .
 
