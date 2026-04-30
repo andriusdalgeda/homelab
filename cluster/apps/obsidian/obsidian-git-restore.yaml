@@ -31,13 +31,13 @@ spec:
               git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
 
               echo "Preparing vault directory..."
-              mkdir -p "/data/Obsidian Vault"
+              mkdir -p /data/obsidian
 
-              echo "Clearing existing vault contents..."
-              rm -rf "/data/Obsidian Vault"/*
+              echo "Clearing existing vault..."
+              rm -rf /data/obsidian/*
 
               echo "Restoring vault..."
-              rsync -a /repo/ "/data/Obsidian Vault/"
+              rsync -a /repo/ /data/obsidian/
 
               echo "Fixing permissions..."
               chown -R 1000:1000 /data

@@ -4,25 +4,22 @@ metadata:
   name: obsidian-git-backup
   namespace: obsidian
 spec:
-  schedule: "0 * * * *"  # every hour
+  schedule: "0 * * * *"   # hourly
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 300
       template:
         spec:
           restartPolicy: Never
           containers:
-            - name: git-backup
-              image: alpine/git:latest
+            - name: backup
+              image: alpine:3.19
               env:
                 - name: GIT_TOKEN
                   valueFrom:
                     secretKeyRef:
                       name: git-credentials
                       key: GIT_TOKEN
-                - name: GIT_AUTHOR_NAME
-                  value: "obsidian-backup"
-                - name: GIT_AUTHOR_EMAIL
-                  value: "backup@local"
               command:
                 - /bin/sh
                 - -c
@@ -41,8 +38,10 @@ spec:
                   git config user.name "obsidian-backup"
                   git config user.email "backup@local"
 
-                  echo "Syncing vault only..."
+                  echo "Ensuring vault path exists..."
+                  mkdir -p /data/obsidian
 
+                  echo "Syncing vault only..."
                   rsync -a --delete \
                     --exclude='.cache' \
                     --exclude='.config' \
@@ -52,7 +51,7 @@ spec:
                     --exclude='Desktop' \
                     --exclude='ssl' \
                     --exclude='.XDG' \
-                    /data/ /repo/
+                    /data/obsidian/ /repo/
 
                   echo "Staging changes..."
                   git add .
@@ -70,9 +69,9 @@ spec:
 
                   echo "Backup complete"
               volumeMounts:
-                - name: obsidian-data
+                - name: data
                   mountPath: /data
           volumes:
-            - name: obsidian-data
+            - name: data
               persistentVolumeClaim:
                 claimName: obsidian-config
