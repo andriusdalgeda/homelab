@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: obsidian-git-restore
+  namespace: obsidian
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: restore
+          image: alpine/git:latest
+          env:
+            - name: GIT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: git-credentials
+                  key: GIT_TOKEN
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+
+              echo "Configuring git identity..."
+              git config user.name "$GIT_AUTHOR_NAME"
+              git config user.email "$GIT_AUTHOR_EMAIL"
+
+              echo "Cloning repo..."
+              git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
+
+              echo "Clearing existing data..."
+              rm -rf /data/*
+
+              echo "Restoring files..."
+              cp -a /repo/. /data/
+
+              echo "Restore complete"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: obsidian-config
