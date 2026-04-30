@@ -1,52 +1,39 @@
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: obsidian-git-restore
   namespace: obsidian
 spec:
-  ttlSecondsAfterFinished: 300
-  backoffLimit: 1
-  template:
+  schedule: "0 0 31 2 *"
+  jobTemplate:
     spec:
-      restartPolicy: Never
-      containers:
-        - name: restore
-          image: alpine:3.19
-          env:
-            - name: GIT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: git-credentials
-                  key: GIT_TOKEN
-          command:
-            - /bin/sh
-            - -c
-            - |
-              set -e
-
-              echo "Installing dependencies..."
-              apk add --no-cache git rsync
-
-              echo "Cloning repo..."
-              git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
-
-              echo "Preparing vault directory..."
-              mkdir -p /data/obsidian
-
-              echo "Clearing existing vault..."
-              rm -rf /data/obsidian/*
-
-              echo "Restoring vault..."
-              rsync -a /repo/ /data/obsidian/
-
-              echo "Fixing permissions..."
-              chown -R 1000:1000 /data
-
-              echo "Restore complete"
-          volumeMounts:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: restore
+              image: alpine:3.19
+              env:
+                - name: GIT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: git-credentials
+                      key: GIT_TOKEN
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  apk add --no-cache git rsync
+                  git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
+                  mkdir -p /data/obsidian
+                  rm -rf /data/obsidian/*
+                  rsync -a /repo/ /data/obsidian/
+                  chown -R 1000:1000 /data
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumes:
             - name: data
-              mountPath: /data
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: obsidian-config
+              persistentVolumeClaim:
+                claimName: obsidian-config
