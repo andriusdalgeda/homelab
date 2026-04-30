@@ -7,3 +7,4 @@ resources:
   - deployment.yaml
   - svc.yaml
   - obsidian-git-backup.yaml
+  - obsidian-git-restore.yaml
