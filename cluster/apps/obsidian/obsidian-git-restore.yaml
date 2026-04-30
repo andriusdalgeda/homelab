@@ -32,11 +32,10 @@ spec:
               git config user.name "obsidian-restore"
               git config user.email "backup@local"
 
-              echo "Clearing existing data..."
+              echo "Restoring files..."
               rm -rf /data/*
 
-              echo "Restoring files..."
-              cp -a /repo/. /data/
+              cp -a /repo/"Obsidian Vault"/. /data/
 
               echo "Restore complete"
           volumeMounts:
