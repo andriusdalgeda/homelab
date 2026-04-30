@@ -29,20 +29,32 @@ spec:
                 - |
                   set -e
 
+                  echo "Installing dependencies..."
+                  apk add --no-cache git rsync
+
                   echo "Cloning repo..."
                   git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
 
-                  echo "Copying data..."
-                  rm -rf /repo/*
-                  cp -r /data/* /repo/
-
                   cd /repo
 
-                  echo "Configuring git identity..."
-                  git config user.name "$GIT_AUTHOR_NAME"
-                  git config user.email "$GIT_AUTHOR_EMAIL"
+                  echo "Configuring git..."
+                  git config user.name "obsidian-backup"
+                  git config user.email "backup@local"
 
-                  echo "Checking for changes..."
+                  echo "Syncing vault only..."
+
+                  rsync -a --delete \
+                    --exclude='.cache' \
+                    --exclude='.config' \
+                    --exclude='.local' \
+                    --exclude='.dbus' \
+                    --exclude='.pki' \
+                    --exclude='Desktop' \
+                    --exclude='ssl' \
+                    --exclude='.XDG' \
+                    /data/ /repo/
+
+                  echo "Staging changes..."
                   git add .
 
                   if git diff --cached --quiet; then
@@ -50,7 +62,7 @@ spec:
                     exit 0
                   fi
 
-                  echo "Committing changes..."
+                  echo "Committing..."
                   git commit -m "Backup $(date +%F-%T)"
 
                   echo "Pushing..."

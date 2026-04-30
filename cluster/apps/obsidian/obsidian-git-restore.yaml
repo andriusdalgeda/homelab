@@ -4,13 +4,14 @@ metadata:
   name: obsidian-git-restore
   namespace: obsidian
 spec:
+  ttlSecondsAfterFinished: 300
   backoffLimit: 1
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: restore
-          image: alpine/git:latest
+          image: alpine:3.19
           env:
             - name: GIT_TOKEN
               valueFrom:
@@ -23,19 +24,23 @@ spec:
             - |
               set -e
 
+              echo "Installing dependencies..."
+              apk add --no-cache git rsync
+
               echo "Cloning repo..."
               git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
-              
-              cd /repo
 
-              echo "Configuring git identity..."
-              git config user.name "obsidian-restore"
-              git config user.email "backup@local"
+              echo "Preparing vault directory..."
+              mkdir -p "/data/Obsidian Vault"
 
-              echo "Restoring files..."
-              rm -rf /data/*
+              echo "Clearing existing vault contents..."
+              rm -rf "/data/Obsidian Vault"/*
 
-              cp -a /repo/"Obsidian Vault"/. /data/
+              echo "Restoring vault..."
+              rsync -a /repo/ "/data/Obsidian Vault/"
+
+              echo "Fixing permissions..."
+              chown -R 1000:1000 /data
 
               echo "Restore complete"
           volumeMounts:
