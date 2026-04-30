@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: obsidian-git-backup
+  namespace: obsidian
+spec:
+  schedule: "0 * * * *"  # every hour
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: git-backup
+              image: alpine/git:latest
+              env:
+                - name: GIT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: git-credentials
+                      key: GIT_TOKEN
+                - name: GIT_AUTHOR_NAME
+                  value: "obsidian-backup"
+                - name: GIT_AUTHOR_EMAIL
+                  value: "backup@local"
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+
+                  echo "Cloning repo..."
+                  git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
+
+                  echo "Copying data..."
+                  rm -rf /repo/*
+                  cp -r /data/* /repo/
+
+                  cd /repo
+
+                  echo "Checking for changes..."
+                  git add .
+
+                  if git diff --cached --quiet; then
+                    echo "No changes detected"
+                    exit 0
+                  fi
+
+                  echo "Committing changes..."
+                  git commit -m "Backup $(date +%F-%T)"
+
+                  echo "Pushing..."
+                  git push origin main
+
+                  echo "Backup complete"
+              volumeMounts:
+                - name: obsidian-data
+                  mountPath: /data
+          volumes:
+            - name: obsidian-data
+              persistentVolumeClaim:
+                claimName: obsidian-config
