@@ -6,4 +6,4 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - svc.yaml
-  - obsidian-git-backup
+  - obsidian-git-backup.yaml
