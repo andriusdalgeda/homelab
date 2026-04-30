@@ -6,6 +6,6 @@ metadata:
 data:
   config.yaml: |
     ingress:
-      - hostname: obsidian.example.com
-        service: http://obsidian.obsidian.svc.cluster.local:3000
+      - hostname: obsidian.andriusdalgeda.com
+        service: http://obsidian:3000
       - service: http_status:404
