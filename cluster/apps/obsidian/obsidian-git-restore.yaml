@@ -12,7 +12,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: restore
-              image: alpine:3.19
+              image: bitnami/git:latest
               env:
                 - name: GIT_TOKEN
                   valueFrom:
@@ -20,15 +20,22 @@ spec:
                       name: git-credentials
                       key: GIT_TOKEN
               command:
-                - /bin/sh
+                - /bin/bash
                 - -c
                 - |
                   set -e
-                  apk add --no-cache git rsync
+
+                  echo "Cloning repo..."
                   git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
+
+                  echo "Preparing vault..."
                   mkdir -p /data/obsidian
                   rm -rf /data/obsidian/*
-                  rsync -a /repo/ /data/obsidian/
+
+                  echo "Restoring..."
+                  cp -a /repo/. /data/obsidian/
+
+                  echo "Fixing permissions..."
                   chown -R 1000:1000 /data
               volumeMounts:
                 - name: data
