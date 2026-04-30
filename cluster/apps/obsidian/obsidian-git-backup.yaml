@@ -13,7 +13,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: backup
-              image: alpine:3.19
+              image: bitnami/git:latest
               env:
                 - name: GIT_TOKEN
                   valueFrom:
@@ -26,11 +26,8 @@ spec:
                 - |
                   set -e
 
-                  echo "Installing dependencies..."
-                  apk add --no-cache git rsync
-
                   echo "Cloning repo..."
-                  git clone https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
+                  git clone --depth=1 https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
 
                   cd /repo
 
@@ -41,17 +38,12 @@ spec:
                   echo "Ensuring vault path exists..."
                   mkdir -p /data/obsidian
 
-                  echo "Syncing vault only..."
-                  rsync -a --delete \
-                    --exclude='.cache' \
-                    --exclude='.config' \
-                    --exclude='.local' \
-                    --exclude='.dbus' \
-                    --exclude='.pki' \
-                    --exclude='Desktop' \
-                    --exclude='ssl' \
-                    --exclude='.XDG' \
-                    /data/obsidian/ /repo/
+                  echo "Syncing vault..."
+                  # remove everything in repo (including dotfiles)
+                  find /repo -mindepth 1 -delete
+
+                  # copy vault (includes .obsidian and other dotfiles)
+                  cp -a /data/obsidian/. /repo/
 
                   echo "Staging changes..."
                   git add .
