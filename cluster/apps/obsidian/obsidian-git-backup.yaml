@@ -31,6 +31,9 @@ spec:
 
                   cd /repo
 
+                  echo "Fixing git safety..."
+                  git config --global --add safe.directory /repo
+
                   echo "Configuring git..."
                   git config user.name "obsidian-backup"
                   git config user.email "backup@local"
@@ -39,10 +42,7 @@ spec:
                   mkdir -p /data/obsidian
 
                   echo "Syncing vault..."
-                  # remove everything in repo (including dotfiles)
                   find /repo -mindepth 1 -delete
-
-                  # copy vault (includes .obsidian and other dotfiles)
                   cp -a /data/obsidian/. /repo/
 
                   echo "Staging changes..."
