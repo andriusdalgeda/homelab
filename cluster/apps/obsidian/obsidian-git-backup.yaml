@@ -35,8 +35,8 @@ spec:
                   git config --global --add safe.directory /repo
 
                   echo "Configuring git..."
-                  git config user.name "obsidian-backup"
-                  git config user.email "backup@local"
+                  git config --global user.name "obsidian-backup"
+                  git config --global user.email "backup@local"
 
                   echo "Ensuring vault path exists..."
                   mkdir -p /data/obsidian
