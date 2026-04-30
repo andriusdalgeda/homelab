@@ -11,7 +11,7 @@ spec:
     branch: main
   secretRef:
     name: flux-system
-  url: https://github.com/andriusdalgeda/homelab.git
+  url: ssh://git@github.com/andriusdalgeda/homelab
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -19,7 +19,7 @@ metadata:
   name: flux-system
   namespace: flux-system
 spec:
-  interval: 10s
+  interval: 10m0s
   path: ./cluster
   prune: true
   sourceRef:
