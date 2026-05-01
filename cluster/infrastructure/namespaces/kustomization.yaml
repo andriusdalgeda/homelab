@@ -7,3 +7,4 @@ resources:
   - external-secrets.yaml
   - velero.yaml
   - longhorn-system.yaml
+  - monitoring.yaml

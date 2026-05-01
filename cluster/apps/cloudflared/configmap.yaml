@@ -12,4 +12,6 @@ data:
         service: http://obsidian.obsidian.svc.cluster.local:3000
       - hostname: uptime.andriusdalgeda.com
         service: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
+      - hostname: grafana.andriusdalgeda.com
+        service: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80
       - service: http_status:404
