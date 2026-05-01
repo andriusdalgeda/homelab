@@ -13,4 +13,4 @@ spec:
     name: flux-system
 
   dependsOn:
-    - name: external-secrets-crds
+    - name: helm-release.yaml
