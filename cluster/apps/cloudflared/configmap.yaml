@@ -8,4 +8,6 @@ data:
     ingress:
       - hostname: obsidian.andriusdalgeda.com
         service: http://obsidian:3000
+      - hostname: uptime.andriusdalgeda.com
+        service: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
       - service: http_status:404
