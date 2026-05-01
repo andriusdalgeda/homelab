@@ -4,7 +4,7 @@ metadata:
   name: obsidian-git-backup
   namespace: obsidian
 spec:
-  schedule: "0 * * * *"   # hourly
+  schedule: "0 */4 * * *" 
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 300
