@@ -5,6 +5,8 @@ metadata:
   namespace: obsidian
 data:
   config.yaml: |
+    metrics: 127.0.0.1:60123
+
     ingress:
       - hostname: obsidian.andriusdalgeda.com
         service: http://obsidian:3000
