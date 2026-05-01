@@ -74,3 +74,56 @@ spec:
       ports:
         - protocol: TCP
           port: 8191
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: prowlarr-egress
+  namespace: prowlarr
+spec:
+  podSelector:
+    matchLabels:
+      app: prowlarr
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: flaresolverr
+      ports:
+        - protocol: TCP
+          port: 8191
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flaresolverr-egress
+  namespace: prowlarr
+spec:
+  podSelector:
+    matchLabels:
+      app: flaresolverr
+  policyTypes:
+    - Egress
+  egress:
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 443
