@@ -9,6 +9,7 @@ spec:
   prune: true
   dependsOn:
     - name: external-secrets-resources
+    - name: longhorn
   sourceRef:
     kind: GitRepository
     name: flux-system

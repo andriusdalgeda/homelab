@@ -6,6 +6,7 @@ resources:
   - infrastructure.yaml
   - external-secrets-system.yaml
   - external-secrets-resources.yaml
+  - longhorn.yaml
   - velero-secrets.yaml
   - velero.yaml
   - apps.yaml
