@@ -4,3 +4,4 @@ namespace: obsidian
 resources:
   - configmap.yaml
   - deployment.yaml
+  - svc.yaml
