@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: cloudflared
   namespace: cloudflared
+  labels:
+    app: cloudflared
 spec:
   selector:
     app: cloudflared
