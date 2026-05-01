@@ -57,7 +57,7 @@ spec:
                   git commit -m "Backup $(date +%F-%T)"
 
                   echo "Pushing..."
-                  git pull --rebase origin main || true
+                  git pull --rebase -X ours origin main || true
                   git push origin main
 
                   echo "Backup complete"
