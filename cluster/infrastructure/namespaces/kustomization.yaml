@@ -4,3 +4,4 @@ resources:
   - cloudflared.yaml
   - uptime-kuma.yaml
   - obsidian.yaml
+  - external-secrets.yaml

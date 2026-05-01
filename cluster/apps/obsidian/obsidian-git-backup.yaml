@@ -19,7 +19,7 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: git-credentials
-                      key: GIT_TOKEN
+                      key: GIT-TOKEN
               command:
                 - /bin/sh
                 - -c
