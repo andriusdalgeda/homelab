@@ -7,6 +7,7 @@ spec:
   interval: 5m
   path: ./cluster/infrastructure/namespaces
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
