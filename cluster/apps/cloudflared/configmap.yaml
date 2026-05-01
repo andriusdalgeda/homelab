@@ -14,4 +14,6 @@ data:
         service: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
       - hostname: grafana.andriusdalgeda.com
         service: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80
+      - hostname: prowlarr.andriusdalgeda.com
+        service: http://prowlarr.prowlarr.svc.cluster.local:9696
       - service: http_status:404

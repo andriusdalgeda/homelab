@@ -8,3 +8,4 @@ resources:
   - velero.yaml
   - longhorn-system.yaml
   - monitoring.yaml
+  - prowlarr.yaml
