@@ -2,14 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloudflared-config
-  namespace: obsidian
+  namespace: cloudflared
 data:
   config.yaml: |
     metrics: 127.0.0.1:60123
 
     ingress:
       - hostname: obsidian.andriusdalgeda.com
-        service: http://obsidian:3000
+        service: http://obsidian.obsidian.svc.cluster.local:3000
       - hostname: uptime.andriusdalgeda.com
         service: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
       - service: http_status:404
