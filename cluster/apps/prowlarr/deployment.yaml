@@ -15,6 +15,7 @@ spec:
     spec:
       dnsConfig:
         options:
+          # required otherwise dns lookups fail...
           - name: ndots
             value: "1"
       containers:
