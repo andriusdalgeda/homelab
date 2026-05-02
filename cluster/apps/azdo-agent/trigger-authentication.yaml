@@ -5,6 +5,9 @@ metadata:
   namespace: azdo-agent
 spec:
   secretTargetRef:
+    - parameter: organizationURL
+      name: azdo-agent-credentials
+      key: AZP-URL
     - parameter: personalAccessToken
       name: azdo-agent-credentials
       key: AZP-TOKEN
