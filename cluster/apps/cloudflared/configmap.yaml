@@ -18,4 +18,6 @@ data:
         service: http://prowlarr.prowlarr.svc.cluster.local:9696
       - hostname: cobalt.andriusdalgeda.com
         service: http://cobalt.cobalt.svc.cluster.local:9200
+      - hostname: pdf.andriusdalgeda.com
+        service: http://stirling-pdf.stirling-pdf.svc.cluster.local:8080
       - service: http_status:404

@@ -10,3 +10,4 @@ resources:
   - monitoring.yaml
   - prowlarr.yaml
   - cobalt.yaml
+  - stirling-pdf.yaml

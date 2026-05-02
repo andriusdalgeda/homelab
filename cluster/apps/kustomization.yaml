@@ -6,5 +6,6 @@ resources:
   - ./cloudflared
   - ./obsidian
   - ./prowlarr
+  - ./stirling-pdf
   - ./flaresolverr
   - ./cobalt
