@@ -11,6 +11,10 @@ spec:
     - name: external-secrets-resources
     - name: longhorn
     - name: monitoring
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: azdo-image-repository
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -10,3 +10,4 @@ resources:
   - monitoring.yaml
   - prowlarr.yaml
   - stirling-pdf.yaml
+  - azdo-agent.yaml

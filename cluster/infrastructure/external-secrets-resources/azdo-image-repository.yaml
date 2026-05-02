@@ -1,0 +1,25 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: azdo-image-repository
+  namespace: flux-system
+spec:
+  refreshInterval: 1h
+
+  secretStoreRef:
+    name: azure
+    kind: ClusterSecretStore
+
+  target:
+    name: azdo-image-repository
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      type: Opaque
+      data:
+        IMAGE_REPO: '{{ index . "registry" }}'
+
+  data:
+    - secretKey: registry
+      remoteRef:
+        key: ACR-LOGIN-SERVER

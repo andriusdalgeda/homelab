@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azdo-agent
+  namespace: azdo-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azdo-agent
+  template:
+    metadata:
+      labels:
+        app: azdo-agent
+    spec:
+      imagePullSecrets:
+        - name: acr-pull-secret
+      containers:
+        - name: azdo-agent
+          image: ${IMAGE_REPO}/azdo-linux:latest
+          env:
+          - name: AZP_URL
+            valueFrom:
+              secretKeyRef:
+                name: azdo-agent-credentials
+                key: AZP-URL
+          - name: AZP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: azdo-agent-credentials
+                key: AZP-TOKEN
+          - name: AZP_POOL
+            valueFrom:
+              secretKeyRef:
+                name: azdo-agent-credentials
+                key: AZP-POOL
