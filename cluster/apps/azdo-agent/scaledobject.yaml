@@ -14,7 +14,7 @@ spec:
   triggers:
     - type: azure-pipelines
       metadata:
-        poolID: !!str ${AZP_POOL_ID}
+        poolID: "9"
         targetPipelinesQueueLength: "1"
       authenticationRef:
         name: azdo-agent
