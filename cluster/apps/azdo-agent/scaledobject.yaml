@@ -14,8 +14,8 @@ spec:
   triggers:
     - type: azure-pipelines
       metadata:
-        poolName: ${AZP_POOL}
-        organizationURLFromEnv: ${AZP_URL}
+        poolName: "${AZP_POOL}"
+        organizationURLFromEnv: "AZP_URL"
         targetPipelinesQueueLength: "1"
         fetchUnfinishedJobsOnly: "true"
         caseInsensitiveDemandsProcessing: "true"
