@@ -7,6 +7,6 @@ spec:
   selector:
     app: cobalt
   ports:
-    - port: 9200
-      targetPort: 9200
+    - port: 9000
+      targetPort: 9000
   type: ClusterIP

@@ -18,6 +18,7 @@ spec:
   values:
     service:
       type: ClusterIP
+      servicename: stirling-pdf
     persistence:
       enabled: true
       storageClass: longhorn
