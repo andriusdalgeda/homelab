@@ -23,6 +23,18 @@ spec:
           env:
             - name: API_URL
               value: "https://cobalt.andriusdalgeda.com/"
+            - name: API_PORT
+              value: "9000"
           securityContext:
             readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: config
+              mountPath: /app/config
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: config
+          emptyDir: {}
       restartPolicy: Always
