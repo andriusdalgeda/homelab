@@ -9,5 +9,4 @@ resources:
   - longhorn-system.yaml
   - monitoring.yaml
   - prowlarr.yaml
-  - cobalt.yaml
   - stirling-pdf.yaml
