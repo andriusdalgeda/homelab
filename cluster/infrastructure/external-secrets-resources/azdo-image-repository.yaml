@@ -19,7 +19,6 @@ spec:
       data:
         IMAGE_REPO: '{{ index . "registry" }}'
         AZP_POOL: '{{ index . "pool" }}'
-        AZP_POOL_ID: '{{ index . "poolId" }}'
 
   data:
     - secretKey: registry
@@ -29,7 +28,3 @@ spec:
     - secretKey: pool
       remoteRef:
         key: AZP-POOL
-
-    - secretKey: poolId
-      remoteRef:
-        key: AZP-POOL-ID
