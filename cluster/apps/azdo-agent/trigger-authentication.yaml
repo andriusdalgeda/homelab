@@ -1,0 +1,10 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: azdo-agent
+  namespace: azdo-agent
+spec:
+  secretTargetRef:
+    - parameter: personalAccessToken
+      name: azdo-agent-credentials
+      key: AZP-TOKEN

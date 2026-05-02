@@ -1,0 +1,23 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: azdo-agent
+  namespace: azdo-agent
+spec:
+  scaleTargetRef:
+    name: azdo-agent
+    envSourceContainerName: azdo-agent
+  minReplicaCount: 1
+  maxReplicaCount: 5
+  pollingInterval: 15
+  cooldownPeriod: 300
+  triggers:
+    - type: azure-pipelines
+      metadata:
+        poolName: ${AZP_POOL}
+        organizationURLFromEnv: ${AZP_URL}
+        targetPipelinesQueueLength: "1"
+        fetchUnfinishedJobsOnly: "true"
+        caseInsensitiveDemandsProcessing: "true"
+      authenticationRef:
+        name: azdo-agent

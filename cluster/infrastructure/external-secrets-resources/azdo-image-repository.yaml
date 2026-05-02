@@ -18,8 +18,13 @@ spec:
       type: Opaque
       data:
         IMAGE_REPO: '{{ index . "registry" }}'
+        AZP_POOL: '{{ index . "pool" }}'
 
   data:
     - secretKey: registry
       remoteRef:
         key: ACR-LOGIN-SERVER
+
+    - secretKey: pool
+      remoteRef:
+        key: AZP-POOL
