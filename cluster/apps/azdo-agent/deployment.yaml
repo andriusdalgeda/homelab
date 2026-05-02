@@ -18,6 +18,7 @@ spec:
       containers:
         - name: azdo-agent
           image: ${IMAGE_REPO}/azdo-linux:latest
+          imagePullPolicy: Always
           env:
           - name: AZP_URL
             valueFrom:
