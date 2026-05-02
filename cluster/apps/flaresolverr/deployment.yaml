@@ -38,19 +38,3 @@ spec:
               memory: 256Mi
             limits:
               memory: 1Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: flaresolverr
-  namespace: prowlarr
-  labels:
-    app: flaresolverr
-spec:
-  selector:
-    app: flaresolverr
-  ports:
-    - name: http
-      port: 8191
-      targetPort: http
-  type: ClusterIP
