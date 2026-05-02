@@ -16,4 +16,6 @@ data:
         service: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80
       - hostname: prowlarr.andriusdalgeda.com
         service: http://prowlarr.prowlarr.svc.cluster.local:9696
+      - hostname: cobalt.andriusdalgeda.com
+        service: http://cobalt.cobalt.svc.cluster.local:9200
       - service: http_status:404
