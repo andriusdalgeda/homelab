@@ -7,14 +7,12 @@ spec:
   scaleTargetRef:
     name: azdo-agent
     envSourceContainerName: azdo-agent
-  minReplicaCount: 1
   maxReplicaCount: 5
-  pollingInterval: 15
-  cooldownPeriod: 300
+  pollingInterval: 10
   triggers:
     - type: azure-pipelines
       metadata:
         poolID: "9"
-        targetPipelinesQueueLength: "1"
+        targetPipelinesQueueLength: "0"
       authenticationRef:
         name: azdo-agent
