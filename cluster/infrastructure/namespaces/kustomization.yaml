@@ -7,6 +7,7 @@ resources:
   - external-secrets.yaml
   - velero.yaml
   - longhorn-system.yaml
+  - keda.yaml
   - monitoring.yaml
   - prowlarr.yaml
   - stirling-pdf.yaml

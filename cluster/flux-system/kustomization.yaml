@@ -7,6 +7,8 @@ resources:
   - external-secrets-system.yaml
   - external-secrets-resources.yaml
   - longhorn.yaml
+  - metrics-server.yaml
+  - keda.yaml
   - monitoring-secrets.yaml
   - monitoring.yaml
   - velero-secrets.yaml
