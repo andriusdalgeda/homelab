@@ -13,37 +13,27 @@ spec:
       backoffLimit: 1
       template:
         spec:
+          dnsPolicy: None
+          dnsConfig:
+            nameservers:
+              - 1.1.1.1
+              - 8.8.8.8
           restartPolicy: Never
           containers:
             - name: check
               image: curlimages/curl:8.10.1
               imagePullPolicy: IfNotPresent
               env:
-                - name: AZP_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: azdo-agent-credentials
-                      key: AZP-URL
-                - name: AZP_TOKEN
-                  valueFrom:
-                    secretKeyRef:
-                      name: azdo-agent-credentials
-                      key: AZP-TOKEN
-                - name: AZP_POOL
-                  valueFrom:
-                    secretKeyRef:
-                      name: azdo-agent-credentials
-                      key: AZP-POOL
                 - name: KUMA_PUSH_URL
                   valueFrom:
                     secretKeyRef:
                       name: azdo-agent-monitoring
                       key: UPTIME-KUMA-AZDO-PUSH-URL
-                - name: MIN_ONLINE_AGENTS
-                  value: "1"
               command:
                 - /bin/sh
-                - -c
+                - -ec
                 - |
+                  : "${KUMA_PUSH_URL:?KUMA_PUSH_URL is empty or missing}"
+
                   echo "Pushing to Uptime Kuma"
-                  curl -v -o /dev/null $KUMA_PUSH_URL
+                  curl -fsv -o /dev/null $KUMA_PUSH_URL
