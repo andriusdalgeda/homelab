@@ -51,16 +51,20 @@ spec:
                 - -ec
                 - |
                   azp_url="$(printf '%s' "$AZP_URL" | sed 's#/*$##')"
-                  organization="$(printf '%s' "$azp_url" | cut -d/ -f4)"
-                  organization_url="https://dev.azure.com/$organization"
 
                   pool_json="$(
                     curl -fsS -u ":$AZP_TOKEN" \
-                      -G "$organization_url/_apis/distributedtask/pools" \
-                      --data-urlencode "poolName=$AZP_POOL" \
-                      --data-urlencode "api-version=7.1"
+                      "$azp_url/_apis/distributedtask/pools?api-version=7.1"
                   )"
-                  pool_id="$(printf '%s' "$pool_json" | grep -o '"id"[[:space:]]*:[[:space:]]*[0-9]*' | head -1 | grep -o '[0-9]*' || true)"
+                  pool_id="$(
+                    printf '%s' "$pool_json" \
+                      | tr '{' '\n' \
+                      | grep "\"name\"[[:space:]]*:[[:space:]]*\"$AZP_POOL\"" \
+                      | grep -o '"id"[[:space:]]*:[[:space:]]*[0-9]*' \
+                      | head -1 \
+                      | grep -o '[0-9]*' \
+                      || true
+                  )"
 
                   if [ -z "$pool_id" ]; then
                     echo "Azure DevOps pool not found: $AZP_POOL"
@@ -69,7 +73,7 @@ spec:
 
                   agents_json="$(
                     curl -fsS -u ":$AZP_TOKEN" \
-                      "$organization_url/_apis/distributedtask/pools/$pool_id/agents?api-version=7.1"
+                      "$azp_url/_apis/distributedtask/pools/$pool_id/agents?api-version=7.1"
                   )"
                   online_agents="$(printf '%s' "$agents_json" | grep -o '"status"[[:space:]]*:[[:space:]]*"online"' | wc -l | tr -d ' ')"
 
