@@ -79,4 +79,4 @@ spec:
 
                   echo "Online Azure DevOps agents: $online_agents"
                   echo "Pushing to Uptime Kuma"
-                  curl -fsS "$KUMA_PUSH_URL"
+                  curl -s -o /dev/null "$KUMA_PUSH_URL"
