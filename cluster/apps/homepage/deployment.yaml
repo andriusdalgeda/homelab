@@ -40,11 +40,11 @@ spec:
               memory: "1Gi"
       initContainers:
         - name: init-config
-          image: alpine/curl
+          image: alpine/git
           volumeMounts:
             - name: config
               mountPath: /app/config
-          command: ['sh', '-c', "curl -o /app/config/settings.yaml https://raw.githubusercontent.com/andriusdalgeda/homelab/refs/heads/main/cluster/apps/homepage/settings.yaml"]
+          command: ['sh', '-c', "git clone https://github.com/andriusdalgeda/homelab.git /tmp/homelab ; mv /tmp/home;ab/cluster/apps/homepage/config /app/config"]
       volumes:
         - name: config
           persistentVolumeClaim:
