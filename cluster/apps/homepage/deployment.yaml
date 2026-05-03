@@ -40,7 +40,7 @@ spec:
               memory: "1Gi"
       initContainers:
         - name: init-config
-          image: busybox:1.28
+          image: alpine/curl
           volumeMounts:
             - name: config
               mountPath: /app/config
