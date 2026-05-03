@@ -14,10 +14,9 @@ spec:
         app: cobalt
     spec:
       dnsConfig:
-        dnsConfig:
-          nameservers:
-            - 1.1.1.1
-            - 8.8.8.8
+        nameservers:
+          - 1.1.1.1
+          - 8.8.8.8
       containers:
         - name: cobalt
           image: ghcr.io/imputnet/cobalt:11.7.1-a636575
@@ -29,4 +28,4 @@ spec:
             - name: API_URL
               value: "https://api.cobalt.andriusdalgeda.com/"
             - name: API_PORT
-              value: 4000
+              value: "4000"
