@@ -34,7 +34,7 @@ spec:
                     secretKeyRef:
                       name: azdo-agent-credentials
                       key: AZP-POOL
-                - name: UPTIME-KUMA-AZDO-PUSH-URL
+                - name: KUMA_PUSH_URL
                   valueFrom:
                     secretKeyRef:
                       name: azdo-agent-monitoring
@@ -48,7 +48,7 @@ spec:
                   : "${AZP_URL:?AZP_URL is empty or missing}"
                   : "${AZP_TOKEN:?AZP_TOKEN is empty or missing}"
                   : "${AZP_POOL:?AZP_POOL is empty or missing}"
-                  : "${UPTIME-KUMA-AZDO-PUSH-URL:?UPTIME-KUMA-AZDO-PUSH-URL is empty or missing}"
+                  : "${KUMA_PUSH_URL:?KUMA_PUSH_URL is empty or missing}"
                   : "${MIN_ONLINE_AGENTS:?MIN_ONLINE_AGENTS is empty or missing}"
 
                   azp_url="${AZP_URL%/}"
@@ -79,4 +79,4 @@ spec:
 
                   echo "Online Azure DevOps agents: $online_agents"
                   echo "Pushing to Uptime Kuma"
-                  curl -s -o /dev/null $UPTIME-KUMA-AZDO-PUSH-URL
+                  curl -fsS "$KUMA_PUSH_URL"
