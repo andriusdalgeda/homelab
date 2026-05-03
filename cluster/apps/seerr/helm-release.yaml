@@ -24,3 +24,19 @@ spec:
       persistence:
         storageClass: longhorn
         size: 5Gi
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: StatefulSet
+              name: seerr
+            patch: |
+              - op: add
+                path: /spec/template/spec/dnsPolicy
+                value: None
+              - op: add
+                path: /spec/template/spec/dnsConfig
+                value:
+                  nameservers:
+                    - 1.1.1.1
+                    - 8.8.8.8
