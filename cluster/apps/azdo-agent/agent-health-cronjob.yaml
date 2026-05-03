@@ -21,7 +21,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: check
-              image: curlimages/curl:8.10.1
+              image: alpine:3.20
               imagePullPolicy: IfNotPresent
               env:
                 - name: AZP_URL
@@ -50,6 +50,8 @@ spec:
                 - /bin/sh
                 - -ec
                 - |
+                  apk add --no-cache curl jq >/dev/null
+
                   azp_url="$(printf '%s' "$AZP_URL" | sed 's#/*$##')"
 
                   pool_json="$(
@@ -58,12 +60,8 @@ spec:
                   )"
                   pool_id="$(
                     printf '%s' "$pool_json" \
-                      | tr '{' '\n' \
-                      | grep "\"name\"[[:space:]]*:[[:space:]]*\"$AZP_POOL\"" \
-                      | grep -o '"id"[[:space:]]*:[[:space:]]*[0-9]*' \
-                      | head -1 \
-                      | grep -o '[0-9]*' \
-                      || true
+                      | jq -r --arg pool "$AZP_POOL" '.value[] | select(.name == $pool) | .id' \
+                      | head -1
                   )"
 
                   if [ -z "$pool_id" ]; then
@@ -75,7 +73,10 @@ spec:
                     curl -fsS -u ":$AZP_TOKEN" \
                       "$azp_url/_apis/distributedtask/pools/$pool_id/agents?api-version=7.1"
                   )"
-                  online_agents="$(printf '%s' "$agents_json" | grep -o '"status"[[:space:]]*:[[:space:]]*"online"' | wc -l | tr -d ' ')"
+                  online_agents="$(
+                    printf '%s' "$agents_json" \
+                      | jq '[.value[] | select(.enabled == true and .status == "online")] | length'
+                  )"
 
                   if [ "$online_agents" -lt "$MIN_ONLINE_AGENTS" ]; then
                     echo "Online Azure DevOps agents below threshold: $online_agents of $MIN_ONLINE_AGENTS"
