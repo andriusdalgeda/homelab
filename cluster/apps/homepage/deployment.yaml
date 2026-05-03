@@ -26,6 +26,8 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "home.andriusdalgeda.com"
+            - name: PORT
+              value: "4500"
           volumeMounts:
             - name: config
               mountPath: /app/config
