@@ -50,55 +50,24 @@ spec:
                 - /bin/sh
                 - -ec
                 - |
-                  : "${AZP_URL:?AZP_URL is empty or missing}"
-                  : "${AZP_TOKEN:?AZP_TOKEN is empty or missing}"
-                  : "${AZP_POOL:?AZP_POOL is empty or missing}"
-                  : "${KUMA_PUSH_URL:?KUMA_PUSH_URL is empty or missing}"
-                  : "${MIN_ONLINE_AGENTS:?MIN_ONLINE_AGENTS is empty or missing}"
+                  organization="$(printf '%s' "${AZP_URL%/}" | cut -d/ -f4)"
+                  organization_url="https://dev.azure.com/${organization}"
 
-                  azp_url="${AZP_URL%/}"
-                  case "$azp_url" in
-                    https://dev.azure.com/*)
-                      organization="$(printf '%s' "$azp_url" | cut -d/ -f4)"
-                      ;;
-                    *)
-                      echo "AZP_URL must look like https://dev.azure.com/<organization>, got: $AZP_URL"
-                      exit 1
-                      ;;
-                  esac
-
-                  if [ -z "$organization" ]; then
-                    echo "Could not determine Azure DevOps organization from AZP_URL: $AZP_URL"
-                    exit 1
-                  fi
-
-                  organization_url="https://dev.azure.com/$organization"
-
-                  echo "Looking up Azure DevOps pool '$AZP_POOL' in organization '$organization'"
                   pool_json="$(
                     curl -fsS -u ":$AZP_TOKEN" \
                       -G "$organization_url/_apis/distributedtask/pools" \
-                      -H "Accept: application/json" \
                       --data-urlencode "poolName=$AZP_POOL" \
                       --data-urlencode "api-version=7.1"
                   )"
-                  pool_id="$(
-                    printf '%s' "$pool_json" \
-                      | grep -o '"id"[[:space:]]*:[[:space:]]*[0-9]*' \
-                      | head -1 \
-                      | grep -o '[0-9]*' \
-                      || true
-                  )"
+                  pool_id="$(printf '%s' "$pool_json" | grep -o '"id"[[:space:]]*:[[:space:]]*[0-9]*' | head -1 | grep -o '[0-9]*' || true)"
 
                   if [ -z "$pool_id" ]; then
                     echo "Azure DevOps pool not found: $AZP_POOL"
                     exit 1
                   fi
 
-                  echo "Checking Azure DevOps agents in pool ID: $pool_id"
                   agents_json="$(
                     curl -fsS -u ":$AZP_TOKEN" \
-                      -H "Accept: application/json" \
                       "$organization_url/_apis/distributedtask/pools/$pool_id/agents?api-version=7.1"
                   )"
                   online_agents="$(printf '%s' "$agents_json" | grep -o '"status"[[:space:]]*:[[:space:]]*"online"' | wc -l | tr -d ' ')"
@@ -109,5 +78,4 @@ spec:
                   fi
 
                   echo "Online Azure DevOps agents: $online_agents"
-                  echo "Pushing to Uptime Kuma"
                   curl -fsS "$KUMA_PUSH_URL"
