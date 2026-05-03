@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: azdo-agent-health
+  namespace: azdo-agent
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: check
+              image: curlimages/curl:8.10.1
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: AZP_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-credentials
+                      key: AZP-URL
+                - name: AZP_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-credentials
+                      key: AZP-TOKEN
+                - name: AZP_POOL
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-credentials
+                      key: AZP-POOL
+                - name: UPTIME-KUMA-AZDO-PUSH-URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-monitoring
+                      key: UPTIME-KUMA-AZDO-PUSH-URL
+                - name: MIN_ONLINE_AGENTS
+                  value: "2"
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  : "${AZP_URL:?AZP_URL is empty or missing}"
+                  : "${AZP_TOKEN:?AZP_TOKEN is empty or missing}"
+                  : "${AZP_POOL:?AZP_POOL is empty or missing}"
+                  : "${UPTIME-KUMA-AZDO-PUSH-URL:?UPTIME-KUMA-AZDO-PUSH-URL is empty or missing}"
+                  : "${MIN_ONLINE_AGENTS:?MIN_ONLINE_AGENTS is empty or missing}"
+
+                  azp_url="${AZP_URL%/}"
+
+                  pool_json="$(
+                    curl -fsS -u ":$AZP_TOKEN" \
+                      -G "$azp_url/_apis/distributedtask/pools" \
+                      --data-urlencode "poolName=$AZP_POOL" \
+                      --data-urlencode "api-version=7.1"
+                  )"
+                  pool_id="$(printf '%s' "$pool_json" | grep -o '"id":[0-9]*' | head -1 | cut -d: -f2)"
+
+                  if [ -z "$pool_id" ]; then
+                    echo "Azure DevOps pool not found: $AZP_POOL"
+                    exit 1
+                  fi
+
+                  agents_json="$(
+                    curl -fsS -u ":$AZP_TOKEN" \
+                      "$azp_url/_apis/distributedtask/pools/$pool_id/agents?api-version=7.1"
+                  )"
+                  online_agents="$(printf '%s' "$agents_json" | grep -o '"status":"online"' | wc -l | tr -d ' ')"
+
+                  if [ "$online_agents" -lt "$MIN_ONLINE_AGENTS" ]; then
+                    echo "Online Azure DevOps agents below threshold: $online_agents of $MIN_ONLINE_AGENTS"
+                    exit 1
+                  fi
+
+                  echo "Online Azure DevOps agents: $online_agents"
+                  echo "Pushing to Uptime Kuma"
+                  curl -fsS "$UPTIME-KUMA-AZDO-PUSH-URL"
