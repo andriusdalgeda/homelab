@@ -40,7 +40,7 @@ spec:
                       name: azdo-agent-monitoring
                       key: UPTIME-KUMA-AZDO-PUSH-URL
                 - name: MIN_ONLINE_AGENTS
-                  value: "2"
+                  value: "1"
               command:
                 - /bin/sh
                 - -ec
