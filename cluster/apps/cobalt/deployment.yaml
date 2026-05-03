@@ -26,5 +26,5 @@ spec:
           env:
             - name: WEB_HOST
               value: "cobalt.andriusdalgeda.com"
-            - name: WEB_DEFAULT_API
+            - name: API_URL
               value: "https://api.cobalt.andriusdalgeda.com/"
