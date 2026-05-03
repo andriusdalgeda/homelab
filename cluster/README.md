@@ -59,16 +59,16 @@ These values are pulled from Azure Key Vault by `ExternalSecret` resources.
 
 External Secrets creates these Kubernetes Secrets from the Key Vault values:
 
-| Kubernetes secret | Namespace | Created by |
-| --- | --- | --- |
-| `acr-pull-secret` | `azdo-agent` | `cluster/apps/azdo-agent/secrets/acr.yaml` |
-| `azdo-agent-credentials` | `azdo-agent` | `cluster/apps/azdo-agent/secrets/azdo.yaml` |
-| `azdo-image-repository` | `flux-system` | `cluster/infrastructure/external-secrets-resources/azdo-image-repository.yaml` |
-| `cloudflared-secret` | `cloudflared` | `cluster/apps/cloudflared/secrets/tunnel.yaml` |
-| `git-credentials` | `obsidian` | `cluster/apps/obsidian/secrets/git.yaml` |
-| `grafana-admin-credentials` | `monitoring` | `cluster/infrastructure/monitoring/secrets/grafana.yaml` |
-| `cloud-credentials` | `velero` | `cluster/infrastructure/velero/secrets/velero.yaml` |
-| `velero-helm-values` | `velero` | `cluster/infrastructure/velero/secrets/velero.yaml` |
+| Kubernetes secret | Namespace | Keys | Created by |
+| --- | --- | --- | --- |
+| `acr-pull-secret` | `azdo-agent` | `.dockerconfigjson` | `cluster/apps/azdo-agent/secrets/acr.yaml` |
+| `azdo-agent-credentials` | `azdo-agent` | `AZP-URL`, `AZP-TOKEN`, `AZP-POOL` | `cluster/apps/azdo-agent/secrets/azdo.yaml` |
+| `azdo-image-repository` | `flux-system` | `IMAGE_REPO`, `AZP_POOL` | `cluster/infrastructure/external-secrets-resources/azdo-image-repository.yaml` |
+| `cloudflared-secret` | `cloudflared` | `TUNNEL-TOKEN` | `cluster/apps/cloudflared/secrets/tunnel.yaml` |
+| `git-credentials` | `obsidian` | `GIT-TOKEN` | `cluster/apps/obsidian/secrets/git.yaml` |
+| `grafana-admin-credentials` | `monitoring` | `admin-user`, `admin-password` | `cluster/infrastructure/monitoring/secrets/grafana.yaml` |
+| `cloud-credentials` | `velero` | `cloud` | `cluster/infrastructure/velero/secrets/velero.yaml` |
+| `velero-helm-values` | `velero` | `values.yaml` | `cluster/infrastructure/velero/secrets/velero.yaml` |
 
 ## Useful Checks
 
