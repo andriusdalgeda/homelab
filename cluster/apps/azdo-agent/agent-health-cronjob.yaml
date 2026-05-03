@@ -50,8 +50,9 @@ spec:
                 - /bin/sh
                 - -ec
                 - |
-                  organization="$(printf '%s' "${AZP_URL%/}" | cut -d/ -f4)"
-                  organization_url="https://dev.azure.com/${organization}"
+                  azp_url="$(printf '%s' "$AZP_URL" | sed 's#/*$##')"
+                  organization="$(printf '%s' "$azp_url" | cut -d/ -f4)"
+                  organization_url="https://dev.azure.com/$organization"
 
                   pool_json="$(
                     curl -fsS -u ":$AZP_TOKEN" \
