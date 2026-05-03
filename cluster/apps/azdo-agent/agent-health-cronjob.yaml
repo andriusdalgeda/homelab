@@ -1,0 +1,113 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: azdo-agent-health
+  namespace: azdo-agent
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: check
+              image: python:3.12-alpine
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: AZP_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-credentials
+                      key: AZP-URL
+                - name: AZP_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-credentials
+                      key: AZP-TOKEN
+                - name: AZP_POOL
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-credentials
+                      key: AZP-POOL
+                - name: KUMA_PUSH_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: azdo-agent-monitoring
+                      key: KUMA-PUSH-URL
+                - name: MIN_ONLINE_AGENTS
+                  value: "2"
+              command:
+                - python
+                - -c
+                - |
+                  import base64
+                  import json
+                  import os
+                  import sys
+                  import urllib.parse
+                  import urllib.request
+
+                  azp_url = os.environ["AZP_URL"].rstrip("/")
+                  azp_token = os.environ["AZP_TOKEN"]
+                  azp_pool = os.environ["AZP_POOL"]
+                  kuma_push_url = os.environ["KUMA_PUSH_URL"]
+                  min_online_agents = int(os.environ.get("MIN_ONLINE_AGENTS", "1"))
+
+                  auth = base64.b64encode(f":{azp_token}".encode()).decode()
+
+                  def get_json(url):
+                    request = urllib.request.Request(
+                      url,
+                      headers={
+                        "Authorization": f"Basic {auth}",
+                        "Accept": "application/json",
+                      },
+                    )
+                    with urllib.request.urlopen(request, timeout=20) as response:
+                      return json.load(response)
+
+                  def push(status, message):
+                    parsed = urllib.parse.urlsplit(kuma_push_url)
+                    query = dict(urllib.parse.parse_qsl(parsed.query))
+                    query["status"] = status
+                    query["msg"] = message
+                    url = urllib.parse.urlunsplit(
+                      parsed._replace(query=urllib.parse.urlencode(query))
+                    )
+                    with urllib.request.urlopen(url, timeout=20) as response:
+                      response.read()
+
+                  try:
+                    pool_query = urllib.parse.urlencode({"poolName": azp_pool, "api-version": "7.1"})
+                    pools = get_json(f"{azp_url}/_apis/distributedtask/pools?{pool_query}").get("value", [])
+                    if not pools:
+                      push("down", f"pool-not-found-{azp_pool}")
+                      sys.exit(1)
+
+                    pool_id = pools[0]["id"]
+                    agents = get_json(
+                      f"{azp_url}/_apis/distributedtask/pools/{pool_id}/agents"
+                      "?includeAssignedRequest=true&api-version=7.1"
+                    ).get("value", [])
+
+                    online = [
+                      agent for agent in agents
+                      if agent.get("enabled") is True and agent.get("status") == "online"
+                    ]
+
+                    if len(online) >= min_online_agents:
+                      push("up", f"online-agents-{len(online)}-of-{len(agents)}")
+                      sys.exit(0)
+
+                    push("down", f"online-agents-{len(online)}-of-{len(agents)}")
+                    sys.exit(1)
+                  except Exception as error:
+                    try:
+                      push("down", f"check-error-{type(error).__name__}")
+                    finally:
+                      raise

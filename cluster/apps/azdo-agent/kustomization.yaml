@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
   - ./secrets
   - deployment.yaml
+  - agent-health-cronjob.yaml
   - trigger-authentication.yaml
   - scaledobject.yaml
