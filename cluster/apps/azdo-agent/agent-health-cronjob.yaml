@@ -71,22 +71,16 @@ spec:
                     with urllib.request.urlopen(request, timeout=20) as response:
                       return json.load(response)
 
-                  def push(status, message):
-                    parsed = urllib.parse.urlsplit(kuma_push_url)
-                    query = dict(urllib.parse.parse_qsl(parsed.query))
-                    query["status"] = status
-                    query["msg"] = message
-                    url = urllib.parse.urlunsplit(
-                      parsed._replace(query=urllib.parse.urlencode(query))
-                    )
-                    with urllib.request.urlopen(url, timeout=20) as response:
+                  def push():
+                    print("Pushing to Uptime Kuma", flush=True)
+                    with urllib.request.urlopen(kuma_push_url, timeout=20) as response:
                       response.read()
 
                   try:
                     pool_query = urllib.parse.urlencode({"poolName": azp_pool, "api-version": "7.1"})
                     pools = get_json(f"{azp_url}/_apis/distributedtask/pools?{pool_query}").get("value", [])
                     if not pools:
-                      push("down", f"pool-not-found-{azp_pool}")
+                      print(f"Pool not found: {azp_pool}", flush=True)
                       sys.exit(1)
 
                     pool_id = pools[0]["id"]
@@ -101,13 +95,12 @@ spec:
                     ]
 
                     if len(online) >= min_online_agents:
-                      push("up", f"online-agents-{len(online)}-of-{len(agents)}")
+                      print(f"Online agents: {len(online)} of {len(agents)}", flush=True)
+                      push()
                       sys.exit(0)
 
-                    push("down", f"online-agents-{len(online)}-of-{len(agents)}")
+                    print(f"Online agents below threshold: {len(online)} of {len(agents)}", flush=True)
                     sys.exit(1)
                   except Exception as error:
-                    try:
-                      push("down", f"check-error-{type(error).__name__}")
-                    finally:
-                      raise
+                    print(f"Check failed: {type(error).__name__}: {error}", flush=True)
+                    raise
