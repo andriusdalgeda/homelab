@@ -28,3 +28,5 @@ spec:
               value: "cobalt.andriusdalgeda.com"
             - name: API_URL
               value: "https://api.cobalt.andriusdalgeda.com/"
+            - name: API_PORT
+              value: 4000
