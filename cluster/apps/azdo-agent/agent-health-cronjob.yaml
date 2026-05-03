@@ -16,7 +16,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: check
-              image: bash:5.2-alpine3.20
+              image: curlimages/curl:8.10.1
               imagePullPolicy: IfNotPresent
               env:
                 - name: AZP_URL
@@ -42,55 +42,41 @@ spec:
                 - name: MIN_ONLINE_AGENTS
                   value: "2"
               command:
-                - /bin/bash
+                - /bin/sh
                 - -ec
                 - |
-                  apk add --no-cache curl jq >/dev/null
-
                   : "${AZP_URL:?AZP_URL is empty or missing}"
                   : "${AZP_TOKEN:?AZP_TOKEN is empty or missing}"
                   : "${AZP_POOL:?AZP_POOL is empty or missing}"
                   : "${KUMA_PUSH_URL:?KUMA_PUSH_URL is empty or missing}"
+                  : "${MIN_ONLINE_AGENTS:?MIN_ONLINE_AGENTS is empty or missing}"
 
                   azp_url="${AZP_URL%/}"
-                  if [[ "$azp_url" != http://* && "$azp_url" != https://* ]]; then
-                    echo "AZP_URL must start with http:// or https://, got: $azp_url"
-                    exit 1
-                  fi
 
-                  auth_header="Authorization: Basic $(printf ':%s' "$AZP_TOKEN" | base64 | tr -d '\n')"
-                  encoded_pool="$(jq -rn --arg pool "$AZP_POOL" '$pool|@uri')"
-
-                  echo "Looking up Azure DevOps pool: $AZP_POOL"
-                  pool_id="$(
-                    curl -fsS \
-                      -H "$auth_header" \
-                      -H "Accept: application/json" \
-                      "$azp_url/_apis/distributedtask/pools?poolName=$encoded_pool&api-version=7.1" \
-                      | jq -r '.value[0].id // empty'
+                  pool_json="$(
+                    curl -fsS -u ":$AZP_TOKEN" \
+                      -G "$azp_url/_apis/distributedtask/pools" \
+                      --data-urlencode "poolName=$AZP_POOL" \
+                      --data-urlencode "api-version=7.1"
                   )"
+                  pool_id="$(printf '%s' "$pool_json" | tr -d '[:space:]' | sed -n 's/.*"id":\([0-9][0-9]*\).*/\1/p')"
 
-                  if [[ -z "$pool_id" ]]; then
-                    echo "Pool not found: $AZP_POOL"
+                  if [ -z "$pool_id" ]; then
+                    echo "Azure DevOps pool not found: $AZP_POOL"
                     exit 1
                   fi
 
-                  echo "Checking agents in pool ID: $pool_id"
                   agents_json="$(
-                    curl -fsS \
-                      -H "$auth_header" \
-                      -H "Accept: application/json" \
-                      "$azp_url/_apis/distributedtask/pools/$pool_id/agents?includeAssignedRequest=true&api-version=7.1"
+                    curl -fsS -u ":$AZP_TOKEN" \
+                      "$azp_url/_apis/distributedtask/pools/$pool_id/agents?api-version=7.1"
                   )"
+                  online_agents="$(printf '%s' "$agents_json" | tr -d '[:space:]' | grep -o '"status":"online"' | wc -l | tr -d ' ')"
 
-                  total="$(jq '.value | length' <<< "$agents_json")"
-                  online="$(jq '[.value[] | select(.enabled == true and .status == "online")] | length' <<< "$agents_json")"
-
-                  if (( online < MIN_ONLINE_AGENTS )); then
-                    echo "Online agents below threshold: $online of $total"
+                  if [ "$online_agents" -lt "$MIN_ONLINE_AGENTS" ]; then
+                    echo "Online Azure DevOps agents below threshold: $online_agents of $MIN_ONLINE_AGENTS"
                     exit 1
                   fi
 
-                  echo "Online agents: $online of $total"
+                  echo "Online Azure DevOps agents: $online_agents"
                   echo "Pushing to Uptime Kuma"
                   curl -fsS "$KUMA_PUSH_URL"
