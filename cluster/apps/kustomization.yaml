@@ -9,3 +9,4 @@ resources:
   - ./stirling-pdf
   - ./flaresolverr
   - ./azdo-agent
+  - ./seerr

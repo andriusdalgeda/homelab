@@ -12,3 +12,4 @@ resources:
   - prowlarr.yaml
   - stirling-pdf.yaml
   - azdo-agent.yaml
+  - seerr.yaml
