@@ -11,3 +11,4 @@ resources:
   - ./azdo-agent
   - ./seerr
   - ./cobalt
+  - ./homepage
