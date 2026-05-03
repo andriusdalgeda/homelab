@@ -60,7 +60,12 @@ spec:
 
                   auth = base64.b64encode(f":{azp_token}".encode()).decode()
 
+                  def host_label(url):
+                    parsed = urllib.parse.urlsplit(url)
+                    return f"{parsed.scheme}://{parsed.hostname}:{parsed.port or 'default'}"
+
                   def get_json(url):
+                    print(f"Calling Azure DevOps API at {host_label(url)}", flush=True)
                     request = urllib.request.Request(
                       url,
                       headers={
@@ -72,7 +77,7 @@ spec:
                       return json.load(response)
 
                   def push():
-                    print("Pushing to Uptime Kuma", flush=True)
+                    print(f"Pushing to Uptime Kuma at {host_label(kuma_push_url)}", flush=True)
                     with urllib.request.urlopen(kuma_push_url, timeout=20) as response:
                       response.read()
 
