@@ -14,7 +14,7 @@ spec:
   triggers:
     - type: azure-pipelines
       metadata:
-        poolName: "k8s"
+        poolName: "${AZP_POOL}"
         targetPipelinesQueueLength: "1"
       authenticationRef:
         name: azdo-agent
