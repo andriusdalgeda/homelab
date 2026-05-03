@@ -1,0 +1,19 @@
+- Test:
+  - Test:
+    - Plex:
+      icon: plex.png
+      href: https://plex.my.host
+      description: Watch movies and TV shows.
+      server: localhost
+      container: plex
+      widgets:
+        - type: tautulli
+          url: http://172.16.1.1:8181
+          key: aabbccddeeffgghhiijjkkllmmnnoo
+        - type: uptimekuma
+          url: http://172.16.1.2:8080
+          slug: aaaaaaabbbbb
+    - UptimeKuma:
+      widget:
+      type: uptimekuma
+      url: https://status.andriusdalgeda.com/

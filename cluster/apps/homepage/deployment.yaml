@@ -28,6 +28,8 @@ spec:
               value: "home.andriusdalgeda.com"
             - name: PORT
               value: "4500"
+            - name: POST
+              value: "0"
           volumeMounts:
             - name: config
               mountPath: /app/config
@@ -36,6 +38,13 @@ spec:
               memory: "256Mi"
             limits:
               memory: "1Gi"
+      initContainers:
+        - name: init-config
+          image: busybox:1.28
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+          command: ['sh', '-c', "curl -o /app/config/settings.yaml https://raw.githubusercontent.com/andriusdalgeda/homelab/refs/heads/main/cluster/apps/homepage/settings.yaml"]
       volumes:
         - name: config
           persistentVolumeClaim:
