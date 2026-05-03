@@ -16,7 +16,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: check
-              image: mcr.microsoft.com/azure-cli:latest
+              image: bash:5.2-alpine3.20
               imagePullPolicy: IfNotPresent
               env:
                 - name: AZP_URL
@@ -45,8 +45,20 @@ spec:
                 - /bin/bash
                 - -ec
                 - |
+                  apk add --no-cache curl jq >/dev/null
+
+                  : "${AZP_URL:?AZP_URL is empty or missing}"
+                  : "${AZP_TOKEN:?AZP_TOKEN is empty or missing}"
+                  : "${AZP_POOL:?AZP_POOL is empty or missing}"
+                  : "${KUMA_PUSH_URL:?KUMA_PUSH_URL is empty or missing}"
+
                   azp_url="${AZP_URL%/}"
-                  auth_header="Authorization: Basic $(printf ':%s' "$AZP_TOKEN" | base64 -w 0)"
+                  if [[ "$azp_url" != http://* && "$azp_url" != https://* ]]; then
+                    echo "AZP_URL must start with http:// or https://, got: $azp_url"
+                    exit 1
+                  fi
+
+                  auth_header="Authorization: Basic $(printf ':%s' "$AZP_TOKEN" | base64 | tr -d '\n')"
                   encoded_pool="$(jq -rn --arg pool "$AZP_POOL" '$pool|@uri')"
 
                   echo "Looking up Azure DevOps pool: $AZP_POOL"
