@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cobalt
+  namespace: cobalt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cobalt
+  template:
+    metadata:
+      labels:
+        app: cobalt
+    spec:
+      dnsConfig:
+        dnsConfig:
+          nameservers:
+            - 1.1.1.1
+            - 8.8.8.8
+      containers:
+        - name: cobalt
+          image: ghcr.io/imputnet/cobalt:11.7.1-a636575
+          ports:
+            - containerPort: 4000
+          env:
+            - name: WEB_HOST
+              value: "cobalt.andriusdalgeda.com"
+            - name: WEB_DEFAULT_API
+              value: "https://api.cobalt.andriusdalgeda.com/"
