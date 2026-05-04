@@ -42,7 +42,7 @@ spec:
               mountPath: /books
             - name: downloads
               # advanced > remote path mapping - qbittorent to local
-              mountPath: /downloads
+              mountPath: /home3/andriusdalgeda/qbittorrent
       volumes:
         - name: config
           persistentVolumeClaim:
