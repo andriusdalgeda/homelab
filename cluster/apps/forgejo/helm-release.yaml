@@ -34,7 +34,7 @@ spec:
     gitea:
       config:
         server:
-          HTTP_PORT: 5000
+          HTTP_PORT: 6000
           SSH_PORT: 222
           DOMAIN: forgejo.andriusdalgeda.com
           ROOT_URL: http://forgejo.andriusdalgeda.com
