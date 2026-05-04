@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abs
+  namespace: abs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: abs
+  template:
+    metadata:
+      labels:
+        app: abs
+    spec:
+      containers:
+        - name: abs
+          image: ghcr.io/advplyr/audiobookshelf:latest
+          env:
+            - name: TZ
+              value: "Europe/London"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Etc/UTC"
+            - name: PORT
+              value: "5000"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: metadata
+              mountPath: /metadata
+            - name: audiobooks
+              mountPath: /audiobooks
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: abs-config
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: abs-metadata
+        - name: audiobooks
+          persistentVolumeClaim:
+            claimName: abs-audiobooks
