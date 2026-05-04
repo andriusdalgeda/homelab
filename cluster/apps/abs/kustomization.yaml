@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - svc.yaml
-  - servicemonitor.yaml
+  - pvc.yaml
