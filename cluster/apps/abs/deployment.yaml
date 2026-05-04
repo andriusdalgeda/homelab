@@ -21,6 +21,8 @@ spec:
       containers:
         - name: abs
           image: ghcr.io/advplyr/audiobookshelf:latest
+          ports:
+            - containerPort: 5000
           env:
             - name: TZ
               value: "Europe/London"

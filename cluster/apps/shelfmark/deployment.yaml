@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shelfmark
+  namespace: shelfmark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shelfmark
+  template:
+    metadata:
+      labels:
+        app: shelfmark
+    spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+        - 1.1.1.1
+        - 8.8.8.8
+      containers:
+        - name: shelfmark
+          image: ghcr.io/calibrain/shelfmark:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: GUID
+              value: "1000"
+            - name: ABB_ENABLED
+              value: "true"
+            - name: ABB_HOSTNAME
+              value: "audiobookbay.lu"
+            - name: AUDIOBOOK_LIBRARY_URL
+              value: "http://abs.abs.svc.cluster.local:5000"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: books
+              mountPath: /books
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: shelfmark-config
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: shelfmark-downloads
+        - name: books
+          persistentVolumeClaim:
+            claimName: shelfmark-books

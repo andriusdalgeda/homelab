@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shelfmark
+  namespace: shelfmark
+  labels:
+    app: shelfmark
+spec:
+  selector:
+    app: shelfmark
+  ports:
+    - name: shelfmark
+      port: 8084
+      targetPort: 8084
+  type: ClusterIP
