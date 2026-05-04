@@ -20,8 +20,6 @@ data:
         service: http://seerr.seerr.svc.cluster.local:3500
       - hostname: cobalt.andriusdalgeda.com
         service: http://cobalt.cobalt.svc.cluster.local:4000
-      - hostname: home.andriusdalgeda.com
-        service: http://homepage.homepage.svc.cluster.local:4500
       - hostname: pdf.andriusdalgeda.com
         service: http://stirling-pdf.stirling-pdf.svc.cluster.local:8080
       - service: http_status:404
