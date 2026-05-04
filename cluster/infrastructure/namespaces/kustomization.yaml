@@ -13,4 +13,3 @@ resources:
   - stirling-pdf.yaml
   - azdo-agent.yaml
   - seerr.yaml
-  - homepage.yaml

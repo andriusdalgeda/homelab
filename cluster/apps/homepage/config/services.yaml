@@ -1,8 +1,0 @@
-- Media:
-    - Jellyfin:
-        href: http://jellyfin:8096
-        icon: jellyfin.png
-
-    - Sonarr:
-        href: http://sonarr:8989
-        icon: sonarr.png
