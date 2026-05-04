@@ -10,5 +10,4 @@ resources:
   - ./flaresolverr
   - ./azdo-agent
   - ./seerr
-  - ./homepage
   - ./abs
