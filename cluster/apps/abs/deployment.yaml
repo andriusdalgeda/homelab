@@ -19,10 +19,6 @@ spec:
           env:
             - name: TZ
               value: "Europe/London"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: "Etc/UTC"
             - name: PORT
               value: "5000"
           volumeMounts:
