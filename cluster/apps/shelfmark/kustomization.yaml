@@ -4,6 +4,5 @@ resources:
   - longhorn-volume.yaml
   - deployment.yaml
   - svc-shelfmark.yaml
-  - svc-volume.yaml
   - pvc.yaml
   - storage-class.yaml

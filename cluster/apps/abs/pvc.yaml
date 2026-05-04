@@ -14,8 +14,8 @@ spec:
     namespace: abs
     name: shelfmark-shared-downloads
   nfs:
-    server: shelfmark-shared-downloads-nfs.longhorn-system.svc.cluster.local
-    path: /
+    server: 10.96.164.54
+    path: /shelfmark-shared-downloads
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
