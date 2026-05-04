@@ -14,3 +14,4 @@ resources:
   - azdo-agent.yaml
   - seerr.yaml
   - abs.yaml
+  - forgejo.yaml
