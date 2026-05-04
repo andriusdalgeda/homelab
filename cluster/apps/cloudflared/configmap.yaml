@@ -25,5 +25,5 @@ data:
       - hostname: abs.andriusdalgeda.com
         service: http://abs.abs.svc.cluster.local:5000
       - hostname: forgejo.andriusdalgeda.com
-        service: http://forgejo.forgejo.svc.cluster.local:5000
+        service: http://forgejo-http.forgejo.svc.cluster.local:5000
       - service: http_status:404
