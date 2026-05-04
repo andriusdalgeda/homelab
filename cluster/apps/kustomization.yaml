@@ -11,5 +11,3 @@ resources:
   - ./azdo-agent
   - ./seerr
   - ./abs
-  - ./shelfmark
-  - ./rreading-glasses

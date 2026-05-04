@@ -1,37 +1,4 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: shelfmark-shared-downloads-abs
-spec:
-  capacity:
-    storage: 20Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: shelfmark-shared-downloads-nfs
-  claimRef:
-    namespace: abs
-    name: shelfmark-shared-downloads
-  nfs:
-    server: 10.96.164.54
-    path: /shelfmark-shared-downloads
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: shelfmark-shared-downloads
-  namespace: abs
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: shelfmark-shared-downloads-nfs
-  volumeName: shelfmark-shared-downloads-abs
-  resources:
-    requests:
-      storage: 20Gi
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: abs-config

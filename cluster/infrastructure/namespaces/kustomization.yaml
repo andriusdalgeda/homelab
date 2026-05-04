@@ -14,5 +14,3 @@ resources:
   - azdo-agent.yaml
   - seerr.yaml
   - abs.yaml
-  - shelfmark.yaml
-  - rreading-glasses.yaml

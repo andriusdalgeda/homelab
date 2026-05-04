@@ -35,7 +35,7 @@ spec:
             - name: metadata
               mountPath: /metadata
             - name: audiobooks
-              mountPath: /downloads
+              mountPath: /audiobooks
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -45,4 +45,4 @@ spec:
             claimName: abs-metadata
         - name: audiobooks
           persistentVolumeClaim:
-            claimName: shelfmark-shared-downloads
+            claimName: abs-audiobooks
