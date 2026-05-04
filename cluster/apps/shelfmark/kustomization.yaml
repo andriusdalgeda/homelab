@@ -2,5 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - deployment.yaml
-  - svc.yaml
+  - svc-shelfmark.yaml
+  - svc-volume.yaml
   - pvc.yaml
+  - storage-class.yaml

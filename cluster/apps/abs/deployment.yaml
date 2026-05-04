@@ -44,4 +44,4 @@ spec:
             claimName: abs-metadata
         - name: audiobooks
           persistentVolumeClaim:
-            claimName: abs-audiobooks
+            claimName: shelfmark-shared-downloads

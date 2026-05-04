@@ -40,15 +40,15 @@ spec:
             - name: books
               mountPath: /books
             - name: downloads
-              # qbittorrent destination
-              mountPath: /home3/andriusdalgeda/downloads
+              # advanced > remote path mapping - qbittorent to local
+              mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: shelfmark-config
         - name: downloads
           persistentVolumeClaim:
-            claimName: shelfmark-downloads
+            claimName: shelfmark-shared-downloads
         - name: books
           persistentVolumeClaim:
             claimName: shelfmark-books
