@@ -40,7 +40,8 @@ spec:
             - name: books
               mountPath: /books
             - name: downloads
-              mountPath: /downloads
+              # qbittorrent destination
+              mountPath: /home3/andriusdalgeda/downloads
       volumes:
         - name: config
           persistentVolumeClaim:
