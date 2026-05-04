@@ -37,5 +37,5 @@ spec:
           HTTP_PORT: 6000
           SSH_PORT: 222
           DOMAIN: forgejo.andriusdalgeda.com
-          ROOT_URL: http://forgejo.andriusdalgeda.com
+          ROOT_URL: https://forgejo.andriusdalgeda.com
           SSH_DOMAIN: forgejo.andriusdalgeda.com
