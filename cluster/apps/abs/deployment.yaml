@@ -5,6 +5,8 @@ metadata:
   namespace: abs
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: abs
@@ -13,11 +15,12 @@ spec:
       labels:
         app: abs
     spec:
-      dnsPolicy: None
+      dnsPolicy: ClusterFirst
       dnsConfig:
         nameservers:
-        - 1.1.1.1
-        - 8.8.8.8
+              - 10.96.0.10
+              - 1.1.1.1
+              - 8.8.8.8
       containers:
         - name: abs
           image: ghcr.io/advplyr/audiobookshelf:latest

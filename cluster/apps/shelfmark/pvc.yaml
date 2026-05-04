@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: longhorn-rwx
+  storageClassName: longhorn-static
   csi:
     driver: driver.longhorn.io
     fsType: ext4
@@ -52,7 +52,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: longhorn-rwx
+  storageClassName: longhorn-static
   volumeName: shelfmark-shared-downloads
   resources:
     requests:
