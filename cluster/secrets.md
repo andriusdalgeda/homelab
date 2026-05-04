@@ -48,6 +48,7 @@ These values are pulled from Azure Key Vault by `ExternalSecret` resources.
 | `TUNNEL-TOKEN` | `cloudflared/cloudflared-secret` | Cloudflare Tunnel | Cloudflare Zero Trust dashboard -> Networks -> Tunnels -> tunnel token. |
 | `GIT-TOKEN` | `obsidian/git-credentials` | Obsidian Git backup/restore jobs | Git provider PAT with access to the Obsidian backup repository. |
 | `UPTIME-KUMA-AZDO-PUSH-URL` | `azdo-agent/azdo-agent-monitoring` | Uptime Kuma push monitor for Azure DevOps agent health | Create a Push monitor in Uptime Kuma and store its full internal push URL, for example `http://uptime-kuma.uptime-kuma.svc.cluster.local:3001/api/push/<token>`. |
+| `RREADING-GLASSES-POSTGRES-PASSWORD` | `rreading-glasses/rreading-glasses-db` | rreading-glasses Postgres password | Generate a strong random password without special shell-sensitive characters. |
 | `SUBSCRIPTION-ID` | `velero/cloud-credentials`, `velero/velero-helm-values` | Velero Azure backup storage | Azure subscription ID containing the Velero backup resources. |
 | `TENANT-ID` | `velero/cloud-credentials` | Velero Azure auth | Microsoft Entra tenant ID for the Velero service principal. |
 | `VELERO-CLIENT-ID` | `velero/cloud-credentials` | Velero Azure auth | Client ID of the Velero service principal. |
@@ -69,6 +70,7 @@ External Secrets creates these Kubernetes Secrets from the Key Vault values:
 | `cloudflared-secret` | `cloudflared` | `TUNNEL-TOKEN` | `cluster/apps/cloudflared/secrets/tunnel.yaml` |
 | `git-credentials` | `obsidian` | `GIT-TOKEN` | `cluster/apps/obsidian/secrets/git.yaml` |
 | `grafana-admin-credentials` | `monitoring` | `admin-user`, `admin-password` | `cluster/infrastructure/monitoring/secrets/grafana.yaml` |
+| `rreading-glasses-db` | `rreading-glasses` | `POSTGRES_PASSWORD` | `cluster/apps/rreading-glasses/secrets/postgres.yaml` |
 | `cloud-credentials` | `velero` | `cloud` | `cluster/infrastructure/velero/secrets/velero.yaml` |
 | `velero-helm-values` | `velero` | `values.yaml` | `cluster/infrastructure/velero/secrets/velero.yaml` |
 
