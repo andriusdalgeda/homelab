@@ -13,6 +13,7 @@ spec:
     - name: metrics-server
     - name: keda
     - name: monitoring
+    - name: cilium
   postBuild:
     substituteFrom:
       - kind: Secret
