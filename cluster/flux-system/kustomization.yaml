@@ -4,7 +4,6 @@ resources:
   - gotk-components.yaml
   - gotk-sync.yaml
   - infrastructure.yaml
-  - cilium.yaml
   - external-secrets-system.yaml
   - external-secrets-resources.yaml
   - longhorn.yaml
