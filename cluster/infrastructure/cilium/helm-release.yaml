@@ -28,6 +28,7 @@ spec:
     envoyConfig:
       enabled: true
     authentication:
+      enabled: true
       mutual:
         spire:
           enabled: true
