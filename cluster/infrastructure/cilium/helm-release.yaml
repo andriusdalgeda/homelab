@@ -33,6 +33,8 @@ spec:
       mutual:
         spire:
           enabled: false
+          install:
+            enabled: false
     hubble:
       enabled: true
       relay:
