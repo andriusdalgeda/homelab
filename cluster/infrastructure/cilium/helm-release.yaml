@@ -28,6 +28,11 @@ spec:
       enabled: true
     envoyConfig:
       enabled: true
+    authentication:
+      enabled: false
+      mutual:
+        spire:
+          enabled: false
     hubble:
       enabled: true
       relay:
