@@ -8,7 +8,7 @@ spec:
   path: ./cluster/infrastructure/monitoring
   prune: true
   wait: true
-  timeout: 10m
+  timeout: 20m
   dependsOn:
     - name: monitoring-secrets
     - name: longhorn
