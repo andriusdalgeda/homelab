@@ -19,6 +19,16 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: kube-prometheus-stack-grafana
+            patch: |
+              - op: add
+                path: /spec/progressDeadlineSeconds
+                value: 1200
   values:
     grafana:
       admin:
