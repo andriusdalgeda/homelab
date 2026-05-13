@@ -19,7 +19,7 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
-    
+
   values:
     grafana:
       admin:
@@ -31,22 +31,6 @@ spec:
         existingClaim: kube-prometheus-stack-grafana
         storageClassName: longhorn
         size: 2Gi
-      readinessProbe:
-        httpGet:
-          path: /api/health
-          port: grafana
-        initialDelaySeconds: 90
-        periodSeconds: 10
-        timeoutSeconds: 30
-        failureThreshold: 30
-      livenessProbe:
-        httpGet:
-          path: /api/health
-          port: grafana
-        initialDelaySeconds: 180
-        periodSeconds: 10
-        timeoutSeconds: 30
-        failureThreshold: 30
       service:
         type: ClusterIP
 
