@@ -20,9 +20,7 @@ spec:
       type: ClusterIP
       servicename: stirling-pdf
     persistence:
-      enabled: true
-      storageClass: longhorn
-      size: 8Gi
+      enabled: false
     envs:
       - name: TZ
         value: Europe/London

@@ -12,3 +12,4 @@ resources:
   - ./seerr
   - ./abs
   - ./forgejo
+  - ./cka-practise
