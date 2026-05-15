@@ -15,8 +15,6 @@ spec:
             - name: backup
               image: bitnami/git:latest
               env:
-                - name: GIT_USERNAME
-                  value: andriusdalgeda
                 - name: GIT_TOKEN
                   valueFrom:
                     secretKeyRef:
@@ -28,8 +26,8 @@ spec:
                 - |
                   set -e
                   export GIT_TERMINAL_PROMPT=0
-                  
-                  repo_url="https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/andriusdalgeda/obsidian.git"
+
+                  repo_url="https://x-access-token:"$GIT_TOKEN"@github.com/andriusdalgeda/obsidian.git"
 
                   echo "Cloning repo..."
                   git clone --depth=1 "$repo_url" /repo
