@@ -25,9 +25,11 @@ spec:
                 - -c
                 - |
                   set -e
+                  export GIT_TERMINAL_PROMPT=0
+                  repo_url="https://x-access-token:${GIT_TOKEN}@github.com/andriusdalgeda/obsidian.git"
 
                   echo "Cloning repo..."
-                  git clone --depth=1 https://$GIT_TOKEN@github.com/andriusdalgeda/obsidian.git /repo
+                  git clone --depth=1 "$repo_url" /repo
 
                   cd /repo
 
