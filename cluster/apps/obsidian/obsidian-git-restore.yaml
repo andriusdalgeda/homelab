@@ -24,11 +24,23 @@ spec:
                 - -c
                 - |
                   set -e
+                  export GIT_TERMINAL_PROMPT=0
 
-                  repo_url="https://x-access-token:"$GIT_TOKEN"@github.com/andriusdalgeda/obsidian.git"
+                  if [ -z "$GIT_TOKEN" ]; then
+                    echo "GIT_TOKEN is required"
+                    exit 1
+                  fi
+
+                  GIT_TOKEN="$(printf '%s' "$GIT_TOKEN" | tr -d '\r\n')"
+                  token_length="$(printf '%s' "$GIT_TOKEN" | wc -c | tr -d ' ')"
+                  echo "Git token length: $token_length"
+
+                  repo_url="https://github.com/andriusdalgeda/obsidian.git"
+                  auth_header="$(printf 'x-access-token:%s' "$GIT_TOKEN" | base64 | tr -d '\n')"
 
                   echo "Cloning repo..."
-                  git clone "$repo_url" /repo
+                  git -c "http.https://github.com/.extraheader=Authorization: Basic $auth_header" \
+                    clone "$repo_url" /repo
 
                   echo "Preparing vault..."
                   mkdir -p /data/obsidian

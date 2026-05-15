@@ -25,13 +25,26 @@ spec:
                 - -c
                 - |
                   set -e
+                  export GIT_TERMINAL_PROMPT=0
 
-                  repo_url="https://x-access-token:"$GIT_TOKEN"@github.com/andriusdalgeda/obsidian.git"
+                  if [ -z "$GIT_TOKEN" ]; then
+                    echo "GIT_TOKEN is required"
+                    exit 1
+                  fi
+
+                  GIT_TOKEN="$(printf '%s' "$GIT_TOKEN" | tr -d '\r\n')"
+                  token_length="$(printf '%s' "$GIT_TOKEN" | wc -c | tr -d ' ')"
+                  echo "Git token length: $token_length"
+
+                  repo_url="https://github.com/andriusdalgeda/obsidian.git"
+                  auth_header="$(printf 'x-access-token:%s' "$GIT_TOKEN" | base64 | tr -d '\n')"
 
                   echo "Cloning repo..."
-                  git clone --depth=1 "$repo_url" /repo
+                  git -c "http.https://github.com/.extraheader=Authorization: Basic $auth_header" \
+                    clone --depth=1 "$repo_url" /repo
 
                   cd /repo
+                  git remote set-url origin "$repo_url"
 
                   echo "Fixing git safety..."
                   git config --global --add safe.directory /repo
@@ -59,8 +72,10 @@ spec:
                   git commit -m "Backup $(date +%F-%T)"
 
                   echo "Pushing..."
-                  git pull --rebase -X ours origin main || true
-                  git push origin main
+                  git -c "http.https://github.com/.extraheader=Authorization: Basic $auth_header" \
+                    pull --rebase -X ours origin main || true
+                  git -c "http.https://github.com/.extraheader=Authorization: Basic $auth_header" \
+                    push origin main
 
                   echo "Backup complete"
               volumeMounts:
