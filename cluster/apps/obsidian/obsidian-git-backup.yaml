@@ -25,7 +25,6 @@ spec:
                 - -c
                 - |
                   set -e
-                  export GIT_TERMINAL_PROMPT=0
 
                   repo_url="https://x-access-token:"$GIT_TOKEN"@github.com/andriusdalgeda/obsidian.git"
 
