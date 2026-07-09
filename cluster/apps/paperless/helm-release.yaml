@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: paperless-ngx
-      version: 0.24.1
+      version: 0.3.19
       sourceRef:
         kind: HelmRepository
         name: paperless
@@ -17,36 +17,22 @@ spec:
     createNamespace: true
   values:
     fullnameOverride: paperless
+    config:
+      url: https://paperless.andriusdalgeda.com
     env:
       TZ: UTC
-      PAPERLESS_URL: https://paperless.andriusdalgeda.com
     service:
-      main:
-        ports:
-          http:
-            port: 8888
+      port: 8888
     persistence:
-      data:
-        enabled: true
-        mountPath: /usr/src/paperless/data
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 5Gi
-      media:
-        enabled: true
-        mountPath: /usr/src/paperless/media
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 5Gi
-      export:
-        enabled: true
-        mountPath: /usr/src/paperless/export
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 1Gi
-      consume:
-        enabled: true
-        mountPath: /usr/src/paperless/consume
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 4Gi
+      enabled: true
+      storageClass: longhorn
+      accessMode: ReadWriteOnce
+      size: 15Gi
+    postgresql:
+      primary:
+        persistence:
+          storageClass: longhorn
+          size: 8Gi
+    valkey:
+      dataStorage:
+        className: longhorn

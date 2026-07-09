@@ -6,4 +6,4 @@ metadata:
 spec:
   interval: 1h
   type: oci
-  url: oci://ghcr.io/gabe565/charts
+  url: oci://codeberg.org/wrenix/helm-charts
