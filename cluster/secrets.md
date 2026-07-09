@@ -47,6 +47,8 @@ These values are pulled from Azure Key Vault by `ExternalSecret` resources.
 | `GRAFANA-ADMIN-PASSWORD` | `monitoring/grafana-admin-credentials` | Grafana admin login | Generate a strong password and store it in Key Vault. |
 | `TUNNEL-TOKEN` | `cloudflared/cloudflared-secret` | Cloudflare Tunnel | Cloudflare Zero Trust dashboard -> Networks -> Tunnels -> tunnel token. |
 | `GIT-TOKEN` | `obsidian/git-credentials` | Obsidian Git backup/restore jobs | Git provider PAT with access to the Obsidian backup repository. |
+| `TAILSCALE-OAUTH-CLIENT-ID` | `tailscale/tailscale-operator-oauth` | Tailscale Kubernetes Operator | Tailscale admin console -> Settings -> OAuth clients. Create an OAuth client with write scopes for `General/Services`, `Devices/Core`, and `Keys/Auth Keys`, tagged as `tag:k8s-operator`. |
+| `TAILSCALE-OAUTH-CLIENT-SECRET` | `tailscale/tailscale-operator-oauth` | Tailscale Kubernetes Operator | Client secret for the same Tailscale OAuth client. Store the plain secret value. |
 | `UPTIME-KUMA-AZDO-PUSH-URL` | `azdo-agent/azdo-agent-monitoring` | Uptime Kuma push monitor for Azure DevOps agent health | Create a Push monitor in Uptime Kuma and store its full internal push URL, for example `http://uptime-kuma.uptime-kuma.svc.cluster.local:3001/api/push/<token>`. |
 | `SUBSCRIPTION-ID` | `velero/cloud-credentials`, `velero/velero-helm-values` | Velero Azure backup storage | Azure subscription ID containing the Velero backup resources. |
 | `TENANT-ID` | `velero/cloud-credentials` | Velero Azure auth | Microsoft Entra tenant ID for the Velero service principal. |
@@ -69,6 +71,7 @@ External Secrets creates these Kubernetes Secrets from the Key Vault values:
 | `cloudflared-secret` | `cloudflared` | `TUNNEL-TOKEN` | `cluster/apps/cloudflared/secrets/tunnel.yaml` |
 | `git-credentials` | `obsidian` | `GIT-TOKEN` | `cluster/apps/obsidian/secrets/git.yaml` |
 | `grafana-admin-credentials` | `monitoring` | `admin-user`, `admin-password` | `cluster/infrastructure/monitoring/secrets/grafana.yaml` |
+| `tailscale-operator-oauth` | `tailscale` | `clientId`, `clientSecret` | `cluster/infrastructure/tailscale/secrets/oauth.yaml` |
 | `cloud-credentials` | `velero` | `cloud` | `cluster/infrastructure/velero/secrets/velero.yaml` |
 | `velero-helm-values` | `velero` | `values.yaml` | `cluster/infrastructure/velero/secrets/velero.yaml` |
 
@@ -80,3 +83,20 @@ kubectl describe clustersecretstore azure
 kubectl get secret azure-keyvault-config -n flux-system
 kubectl get secret azure-secret-sp -n external-secrets
 ```
+
+## Tailscale Operator Setup
+
+Before Flux can install the Tailscale operator, add these tags to your
+tailnet policy:
+
+```json
+"tagOwners": {
+  "tag:k8s-operator": [],
+  "tag:k8s": ["tag:k8s-operator"]
+}
+```
+
+Create a Tailscale OAuth client with write scopes for `General/Services`,
+`Devices/Core`, and `Keys/Auth Keys`, and assign it `tag:k8s-operator`.
+Store its credentials in Azure Key Vault as `TAILSCALE-OAUTH-CLIENT-ID`
+and `TAILSCALE-OAUTH-CLIENT-SECRET`.

@@ -11,6 +11,8 @@ resources:
   - keda.yaml
   - monitoring-secrets.yaml
   - monitoring.yaml
+  - tailscale-secrets.yaml
+  - tailscale.yaml
   - velero-secrets.yaml
   - velero.yaml
   - apps.yaml
