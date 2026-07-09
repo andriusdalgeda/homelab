@@ -21,7 +21,7 @@ spec:
       url: https://paperless.taile6b0e8.ts.net
     env:
       TZ: UTC
-      PAPERLESS_ALLOWED_HOSTS: paperless.andriusdalgeda.com,paperless.taile6b0e8.ts.net,paperless,10.0.1.30
+      PAPERLESS_ALLOWED_HOSTS: "*"
       PAPERLESS_CORS_ALLOWED_HOSTS: https://paperless.andriusdalgeda.com,https://paperless.taile6b0e8.ts.net
       PAPERLESS_CSRF_TRUSTED_ORIGINS: https://paperless.andriusdalgeda.com,https://paperless.taile6b0e8.ts.net
       PAPERLESS_PROXY_SSL_HEADER: '["HTTP_X_FORWARDED_PROTO", "https"]'
