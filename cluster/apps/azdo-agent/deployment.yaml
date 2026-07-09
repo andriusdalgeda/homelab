@@ -17,7 +17,7 @@ spec:
         - name: acr-pull-secret
       containers:
         - name: azdo-agent
-          image: ${IMAGE_REPO}/azdo-linux:latest
+          image:  andriusdalgeda/azdo-linux
           imagePullPolicy: Always
           env:
           - name: AZP_URL

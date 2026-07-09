@@ -17,13 +17,13 @@ spec:
       engineVersion: v2
       type: Opaque
       data:
-        IMAGE_REPO: '{{ index . "registry" }}'
+        IMAGE_REPO: 'docker.io/{{ index . "username" }}'
         AZP_POOL: '{{ index . "pool" }}'
 
   data:
-    - secretKey: registry
+    - secretKey: username
       remoteRef:
-        key: ACR-LOGIN-SERVER
+        key: DOCKERHUB-USERNAME
 
     - secretKey: pool
       remoteRef:
