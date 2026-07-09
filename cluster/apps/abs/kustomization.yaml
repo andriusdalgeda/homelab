@@ -5,3 +5,4 @@ resources:
   - svc.yaml
   - svc-nodeport.yaml
   - pvc.yaml
+  - ingress-tailscale.yaml

@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: abs-tailscale
+  namespace: abs
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - abs
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: abs
+                port:
+                  number: 5000
