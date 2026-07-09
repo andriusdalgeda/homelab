@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - repository.yaml
   - helm-release.yaml
-  - ingress-tailscale.yaml
+  - https-tailscale.yaml
+  - ssh-tailscale.yaml
