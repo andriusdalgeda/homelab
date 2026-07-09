@@ -36,3 +36,13 @@ spec:
     valkey:
       dataStorage:
         className: longhorn
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: paperless
+            patch: |
+              - op: add
+                path: /spec/template/spec/enableServiceLinks
+                value: false
