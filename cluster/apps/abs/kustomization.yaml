@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - svc.yaml
-  - svc-nodeport.yaml
   - pvc.yaml
   - ingress-tailscale.yaml
