@@ -16,3 +16,4 @@ resources:
   - seerr.yaml
   - abs.yaml
   - forgejo.yaml
+  - paperless.yaml
