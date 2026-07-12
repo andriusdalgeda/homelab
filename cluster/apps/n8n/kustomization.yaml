@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - secrets
+  - deployment.yaml
+  - ingress-tailscale.yaml
+  - pvc.yaml
+  - svc.yaml

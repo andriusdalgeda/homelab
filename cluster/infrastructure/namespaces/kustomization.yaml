@@ -18,3 +18,4 @@ resources:
   - forgejo.yaml
   - paperless.yaml
   - garmin-grafana.yaml
+  - n8n.yaml
