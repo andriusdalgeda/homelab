@@ -17,3 +17,4 @@ resources:
   - abs.yaml
   - forgejo.yaml
   - paperless.yaml
+  - garmin-grafana.yaml

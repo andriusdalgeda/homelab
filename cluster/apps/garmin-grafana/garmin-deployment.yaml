@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garmin-grafana-fetcher
+  namespace: garmin-grafana
+  labels:
+    app.kubernetes.io/name: garmin-grafana-fetcher
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: garmin-grafana-fetcher
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: garmin-grafana-fetcher
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: wait-for-influxdb
+          image: curlimages/curl:latest
+          command: [sh, -c]
+          args:
+            - |
+              until curl --fail --silent http://garmin-grafana-influxdb:8086/ping; do
+                echo "Waiting for InfluxDB..."
+                sleep 5
+              done
+          securityContext:
+            allowPrivilegeEscalation: false
+      containers:
+        - name: garmin-fetch-data
+          image: ghcr.io/arpanghosh8453/garmin-fetch-data:v0.3.0
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+          envFrom:
+            - secretRef:
+                name: garmin-grafana-credentials
+          env:
+            - name: INFLUXDB_HOST
+              value: garmin-grafana-influxdb
+            - name: INFLUXDB_PORT
+              value: "8086"
+            - name: INFLUXDB_DATABASE
+              value: GarminStats
+            - name: INFLUXDB_ENDPOINT_IS_HTTP
+              value: "True"
+            - name: INFLUXDB_VERSION
+              value: "1"
+            - name: ALWAYS_PROCESS_FIT_FILES
+              value: "True"
+            - name: FETCH_INTERVAL
+              value: 15min
+          volumeMounts:
+            - name: garmin-tokens
+              mountPath: /home/appuser/.garminconnect
+      volumes:
+        - name: garmin-tokens
+          persistentVolumeClaim:
+            claimName: garmin-grafana-tokens
