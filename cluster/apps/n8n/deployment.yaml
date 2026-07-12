@@ -18,6 +18,12 @@ spec:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      dnsPolicy: ClusterFirst
+      dnsConfig:
+        nameservers:
+          - 10.96.0.10
+          - 1.1.1.1
+          - 8.8.8.8
       containers:
         - name: n8n
           image: docker.n8n.io/n8nio/n8n:2.26.8
