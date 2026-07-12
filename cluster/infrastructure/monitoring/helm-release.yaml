@@ -22,15 +22,6 @@ spec:
 
   values:
     grafana:
-      envValueFrom:
-        INFLUXDB_USERNAME:
-          secretKeyRef:
-            name: garmin-grafana-datasource
-            key: INFLUXDB_USERNAME
-        INFLUXDB_PASSWORD:
-          secretKeyRef:
-            name: garmin-grafana-datasource
-            key: INFLUXDB_PASSWORD
       admin:
         existingSecret: grafana-admin-credentials
         userKey: admin-user
@@ -42,27 +33,6 @@ spec:
         size: 2Gi
       service:
         type: ClusterIP
-      additionalDataSources:
-        - name: GarminInflux
-          uid: DS_GARMIN_STATS
-          type: influxdb
-          access: proxy
-          url: http://garmin-grafana-influxdb.garmin-grafana.svc.cluster.local:8086
-          user: $__env{INFLUXDB_USERNAME}
-          jsonData:
-            version: InfluxQL
-            dbName: GarminStats
-            httpMethod: GET
-          secureJsonData:
-            password: $__env{INFLUXDB_PASSWORD}
-      dashboards:
-        garmin:
-          garmin-grafana:
-            gnetId: 23245
-            revision: 2
-            datasource:
-              - name: DS_GARMIN_STATS
-                value: GarminInflux
 
     prometheus:
       prometheusSpec:
