@@ -2,8 +2,7 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "efa86fd1d0c121a26444b636a3f509a8",
-    "namespace": "default",
+    "name": "test-dashboard"
     "uid": "d86a486a-20b8-4a8d-809a-e742edd75921",
     "resourceVersion": "1785419961565983",
     "generation": 2,
@@ -12,15 +11,6 @@
       "grafana.app/deprecatedInternalID": "497799972884480"
     },
     "annotations": {
-      "grafana.app/createdBy": "access-policy:service",
-      "grafana.app/managedBy": "classic-file-provisioning",
-      "grafana.app/managerId": "sidecarProvider",
-      "grafana.app/sourceChecksum": "b50d364eb89a43d005bb09d025933cd4",
-      "grafana.app/sourcePath": "/tmp/dashboards/k8s-resources-cluster.json",
-      "grafana.app/sourceTimestamp": "1785419961000",
-      "grafana.app/updatedBy": "access-policy:service",
-      "grafana.app/updatedTimestamp": "2026-07-30T13:59:21Z",
-      "grafana.app/folder": ""
     }
   },
   "spec": {
