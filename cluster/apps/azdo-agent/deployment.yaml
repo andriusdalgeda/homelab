@@ -4,7 +4,7 @@ metadata:
   name: azdo-agent
   namespace: azdo-agent
 spec:
-  replicas: 2
+  replicas: 0
   selector:
     matchLabels:
       app: azdo-agent
