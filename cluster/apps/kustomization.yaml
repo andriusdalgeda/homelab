@@ -8,7 +8,7 @@ resources:
   - ./prowlarr
   - ./stirling-pdf
   - ./flaresolverr
-  - ./azdo-agent
+  # - ./azdo-agent
   - ./seerr
   - ./abs
   - ./forgejo
