@@ -10,7 +10,7 @@ resources:
   - ./flaresolverr
   # - ./azdo-agent
   - ./seerr
-  - ./abs
+  # - ./abs
   # - ./forgejo
   - ./paperless
   - ./garmin-grafana
