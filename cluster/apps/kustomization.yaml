@@ -6,12 +6,12 @@ resources:
   - ./cloudflared
   - ./obsidian
   - ./prowlarr
-  - ./stirling-pdf
+  # - ./stirling-pdf
   - ./flaresolverr
   # - ./azdo-agent
   - ./seerr
   - ./abs
-  - ./forgejo
+  # - ./forgejo
   - ./paperless
   - ./garmin-grafana
-  - ./n8n
+  # - ./n8n
