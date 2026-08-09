@@ -16,3 +16,4 @@ resources:
   - velero-secrets.yaml
   - velero.yaml
   - apps.yaml
+  - fluxcd-capacitor.yaml
