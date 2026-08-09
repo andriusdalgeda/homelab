@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "flux": {
+    "managerFilePatterns": ["/(^|/)cluster/.+\\.ya?ml$/"]
+  },
+  "kubernetes": {
+    "managerFilePatterns": ["/(^|/)cluster/.+\\.ya?ml$/"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["flux", "kubernetes"],
+      "labels": ["dependencies", "kubernetes"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}
