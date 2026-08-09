@@ -4,3 +4,4 @@ resources:
   - helm-release.yaml
   - svc.yaml
   - network-policy.yaml
+  - rbac.yaml

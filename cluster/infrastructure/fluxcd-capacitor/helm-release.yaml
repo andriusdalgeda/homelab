@@ -26,3 +26,24 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: capacitor
+  patches:
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: capacitor
+          namespace: flux-system
+        spec:
+          template:
+            spec:
+              containers:
+                - name: capacitor
+                  env:
+                    - name: AUTH
+                      value: noauth
+                    - name: IMPERSONATE_SA_RULES
+                      value: noauth=flux-system:capacitor-next-preset-readonly
+      target:
+        kind: Deployment
+        name: capacitor
+        namespace: flux-system
