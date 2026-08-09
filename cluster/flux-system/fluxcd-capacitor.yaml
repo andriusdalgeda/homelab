@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: capacitor
+  name: fluxcd-capacitor
   namespace: flux-system
 spec:
   interval: 5m
-  path: ./cluster/infrastructure/capacitor
+  path: ./cluster/infrastructure/fluxcd-capacitor
   prune: true
   wait: true
   timeout: 10m
