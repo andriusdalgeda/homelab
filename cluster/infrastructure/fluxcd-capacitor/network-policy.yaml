@@ -6,7 +6,8 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: capacitor-next
+      app.kubernetes.io/name: onechart
+      app.kubernetes.io/instance: capacitor
   policyTypes:
     - Ingress
   ingress:
@@ -16,4 +17,4 @@ spec:
               kubernetes.io/metadata.name: cloudflared
       ports:
         - protocol: TCP
-          port: 8080
+          port: 9000

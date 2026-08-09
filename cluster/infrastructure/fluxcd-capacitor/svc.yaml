@@ -5,7 +5,8 @@ metadata:
   namespace: flux-system
 spec:
   selector:
-    app: capacitor-next
+    app.kubernetes.io/name: onechart
+    app.kubernetes.io/instance: capacitor
   ports:
     - name: http
       port: 9000
