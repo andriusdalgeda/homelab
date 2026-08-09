@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: influxdb
-          image: influxdb:1.11
+          image: influxdb:1.12
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000

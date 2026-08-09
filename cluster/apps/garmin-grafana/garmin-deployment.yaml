@@ -33,7 +33,7 @@ spec:
             allowPrivilegeEscalation: false
       containers:
         - name: garmin-fetch-data
-          image: ghcr.io/arpanghosh8453/garmin-fetch-data:v0.3.0
+          image: ghcr.io/arpanghosh8453/garmin-fetch-data:v0.5.0
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
