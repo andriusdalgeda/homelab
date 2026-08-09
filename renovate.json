@@ -13,8 +13,9 @@
       "labels": ["dependencies", "kubernetes"]
     },
     {
-      "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true
+      "matchPackageNames": ["*"],
+      "groupName": "all dependency updates",
+      "groupSlug": "all-dependency-updates"
     }
   ]
 }
