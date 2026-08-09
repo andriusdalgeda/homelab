@@ -26,7 +26,6 @@ data:
         service: http://abs.abs.svc.cluster.local:5000
       - hostname: forgejo.andriusdalgeda.com
         service: http://forgejo-http.forgejo.svc.cluster.local:6000
-      - hostname: capacitor.andriusdalgeda.com
-        service: http://capacitor.flux-system.svc.cluster.local:9000
+      - hostname: flux.andriusdalgeda.com
+        service: http://flux-web.flux-system.svc.cluster.local:9080
       - service: http_status:404
-

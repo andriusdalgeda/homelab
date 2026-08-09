@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flux-web
+  namespace: flux-system
+spec:
+  interval: 1h
+  releaseName: flux-web
+  chartRef:
+    kind: OCIRepository
+    name: flux-web
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+  values:
+    fullnameOverride: flux-web
+    installCRDs: true
+    web:
+      enabled: true
+      serverOnly: true

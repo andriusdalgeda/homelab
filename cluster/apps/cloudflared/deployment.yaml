@@ -10,6 +10,8 @@ spec:
       app: cloudflared
   template:
     metadata:
+      annotations:
+        config.cloudflared.io/revision: flux-web
       labels:
         app: cloudflared
     spec:
