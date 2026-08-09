@@ -1,6 +1,42 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: capacitor-next
+  namespace: flux-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: capacitor-next-preset-readonly
+rules:
+  - apiGroups: [""]
+    resources:
+      - configmaps
+      - endpoints
+      - events
+      - limitranges
+      - namespaces
+      - nodes
+      - persistentvolumeclaims
+      - persistentvolumes
+      - pods
+      - pods/log
+      - pods/status
+      - replicationcontrollers
+      - resourcequotas
+      - serviceaccounts
+      - services
+    verbs: [get, list, watch]
+  - apiGroups: [apps, batch, autoscaling, networking.k8s.io, rbac.authorization.k8s.io, policy, storage.k8s.io, certificates.k8s.io, coordination.k8s.io, discovery.k8s.io, events.k8s.io, scheduling.k8s.io, node.k8s.io, admissionregistration.k8s.io, apiextensions.k8s.io, metrics.k8s.io, source.toolkit.fluxcd.io, kustomize.toolkit.fluxcd.io, helm.toolkit.fluxcd.io, notification.toolkit.fluxcd.io, image.toolkit.fluxcd.io, infra.contrib.fluxcd.io, gitops.kluctl.io, argoproj.io, pkg.crossplane.io, apiextensions.crossplane.io, cert-manager.io, acme.cert-manager.io, external-secrets.io, onepassword.com, bitnami.com, monitoring.coreos.com, networking.istio.io, security.istio.io, gateway.networking.k8s.io, traefik.io, traefik.containo.us, packaging.carvel.dev, data.packaging.carvel.dev, kappctrl.k14s.io, secretgen.carvel.dev, secretgen.k14s.io]
+    resources: ["*"]
+    verbs: [get, list, watch]
+  - apiGroups: [authorization.k8s.io]
+    resources: [selfsubjectaccessreviews]
+    verbs: [create]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
   name: capacitor-next-preset-readonly
   namespace: flux-system
 ---
@@ -11,7 +47,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: view
+  name: capacitor-next-preset-readonly
 subjects:
   - kind: ServiceAccount
     name: capacitor-next-preset-readonly
@@ -20,28 +56,24 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: capacitor-impersonate-readonly
+  name: capacitor-next-impersonate-readonly
   namespace: flux-system
 rules:
-  - apiGroups:
-      - ""
-    resources:
-      - serviceaccounts
-    resourceNames:
-      - capacitor-next-preset-readonly
-    verbs:
-      - impersonate
+  - apiGroups: [""]
+    resources: [serviceaccounts]
+    resourceNames: [capacitor-next-preset-readonly]
+    verbs: [impersonate]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: capacitor-impersonate-readonly
+  name: capacitor-next-impersonate-readonly
   namespace: flux-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: capacitor-impersonate-readonly
+  name: capacitor-next-impersonate-readonly
 subjects:
   - kind: ServiceAccount
-    name: capacitor
+    name: capacitor-next
     namespace: flux-system

@@ -3,14 +3,11 @@ kind: Service
 metadata:
   name: capacitor
   namespace: flux-system
-  labels:
-    app: capacitor
 spec:
   selector:
-    app.kubernetes.io/name: onechart
-    app.kubernetes.io/instance: capacitor
+    app: capacitor-next
   ports:
     - name: http
       port: 9000
-      targetPort: 9000
+      targetPort: http
   type: ClusterIP
