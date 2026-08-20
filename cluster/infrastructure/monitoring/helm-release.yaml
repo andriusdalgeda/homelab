@@ -51,38 +51,6 @@ spec:
                 requests:
                   storage: 20Gi
 
-    kubelet:
-      serviceMonitor:
-        relabelings:
-          - targetLabel: cluster
-            replacement: homelab
-        cAdvisorRelabelings:
-          - sourceLabels:
-              - __metrics_path__
-            targetLabel: metrics_path
-          - targetLabel: cluster
-            replacement: homelab
-        probesRelabelings:
-          - sourceLabels:
-              - __metrics_path__
-            targetLabel: metrics_path
-          - targetLabel: cluster
-            replacement: homelab
-
-    kubeStateMetrics:
-      prometheus:
-        monitor:
-          relabelings:
-            - targetLabel: cluster
-              replacement: homelab
-
-    prometheus-node-exporter:
-      prometheus:
-        monitor:
-          relabelings:
-            - targetLabel: cluster
-              replacement: homelab
-
     alertmanager:
       alertmanagerSpec:
         storage:
