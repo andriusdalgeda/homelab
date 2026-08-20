@@ -21,7 +21,9 @@ spec:
         fsGroup: 1000
       containers:
         - name: influxdb
-          image: influxdb:2.9
+          # The Garmin fetcher uses the InfluxDB v1 client and username/password
+          # authentication, so it must run against the v1-compatible server.
+          image: influxdb:1.8.10
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
