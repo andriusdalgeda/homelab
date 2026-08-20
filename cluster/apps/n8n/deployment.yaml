@@ -24,7 +24,7 @@ spec:
             value: "1"
       containers:
         - name: n8n
-          image: docker.n8n.io/n8nio/n8n:2.35.2
+          image: docker.n8n.io/n8nio/n8n:2.36.3
           ports:
             - containerPort: 5678
           envFrom:
@@ -89,7 +89,7 @@ spec:
             timeoutSeconds: 5
             failureThreshold: 6
         - name: task-runners
-          image: n8nio/runners:2.35.2
+          image: n8nio/runners:2.36.3
           envFrom:
             - secretRef:
                 name: n8n-credentials
