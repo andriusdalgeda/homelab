@@ -36,7 +36,7 @@ spec:
 
     prometheus:
       prometheusSpec:
-        retention: 7d
+        retention: 30d
         serviceMonitorSelectorNilUsesHelmValues: false
         serviceMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
@@ -51,8 +51,6 @@ spec:
                 requests:
                   storage: 20Gi
 
-    # The bundled Kubernetes dashboards select metrics by this label.  Add it at
-    # scrape time so it is present on both raw metrics and recording rules.
     kubelet:
       serviceMonitor:
         relabelings:
