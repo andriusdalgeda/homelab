@@ -13,6 +13,11 @@
       "labels": ["dependencies", "kubernetes"]
     },
     {
+      "matchFileNames": ["cluster/apps/garmin-grafana/influxdb-deployment.yaml"],
+      "matchPackageNames": ["influxdb"],
+      "enabled": false
+    },
+    {
       "matchPackageNames": ["*"],
       "groupName": "all dependency updates",
       "groupSlug": "all-dependency-updates"
