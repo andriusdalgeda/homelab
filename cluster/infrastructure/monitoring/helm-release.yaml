@@ -51,6 +51,40 @@ spec:
                 requests:
                   storage: 20Gi
 
+    # The bundled Kubernetes dashboards select metrics by this label.  Add it at
+    # scrape time so it is present on both raw metrics and recording rules.
+    kubelet:
+      serviceMonitor:
+        relabelings:
+          - targetLabel: cluster
+            replacement: homelab
+        cAdvisorRelabelings:
+          - sourceLabels:
+              - __metrics_path__
+            targetLabel: metrics_path
+          - targetLabel: cluster
+            replacement: homelab
+        probesRelabelings:
+          - sourceLabels:
+              - __metrics_path__
+            targetLabel: metrics_path
+          - targetLabel: cluster
+            replacement: homelab
+
+    kubeStateMetrics:
+      prometheus:
+        monitor:
+          relabelings:
+            - targetLabel: cluster
+              replacement: homelab
+
+    prometheus-node-exporter:
+      prometheus:
+        monitor:
+          relabelings:
+            - targetLabel: cluster
+              replacement: homelab
+
     alertmanager:
       alertmanagerSpec:
         storage:
