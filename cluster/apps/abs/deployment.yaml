@@ -14,11 +14,6 @@ spec:
         app: abs
     spec:
       dnsPolicy: ClusterFirst
-      dnsConfig:
-        nameservers:
-          - 10.96.0.10
-          - 1.1.1.1
-          - 8.8.8.8
       containers:
         - name: abs
           image: ghcr.io/advplyr/audiobookshelf:latest

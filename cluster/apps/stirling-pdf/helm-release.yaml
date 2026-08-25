@@ -21,6 +21,12 @@ spec:
       servicename: stirling-pdf
     persistence:
       enabled: false
+    probes:
+      liveness:
+        initialDelaySeconds: 120
+        failureThreshold: 6
+      readiness:
+        initialDelaySeconds: 30
     envs:
       - name: TZ
         value: Europe/London
