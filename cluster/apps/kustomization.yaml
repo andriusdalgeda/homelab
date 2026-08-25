@@ -6,11 +6,11 @@ resources:
   - ./cloudflared
   - ./obsidian
   - ./prowlarr
-  # - ./stirling-pdf
+  - ./stirling-pdf
   - ./flaresolverr
   # - ./azdo-agent
   - ./seerr
-  # - ./abs
+  - ./abs
   # - ./forgejo
   - ./paperless
   - ./garmin-grafana
