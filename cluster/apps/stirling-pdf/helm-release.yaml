@@ -20,7 +20,7 @@ spec:
       type: ClusterIP
       servicename: stirling-pdf
     persistence:
-      enabled: false
+      enabled: true
     probes:
       liveness:
         initialDelaySeconds: 120
