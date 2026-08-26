@@ -13,5 +13,4 @@ resources:
   - ./abs
   # - ./forgejo
   - ./paperless
-  - ./garmin-grafana
   # - ./n8n
