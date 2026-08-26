@@ -3,4 +3,6 @@ kind: Kustomization
 resources:
   - repository.yaml
   - grafana-pvc.yaml
+  - pve-exporter-deployment.yaml
+  - pve-exporter-service.yaml
   - helm-release.yaml

@@ -43,6 +43,10 @@ spec:
       prometheusSpec:
         retention: 30d
         retentionSize: 16GB
+        additionalScrapeConfigsSecret:
+          enabled: true
+          name: prometheus-additional-scrape-configs
+          key: pve.yaml
         serviceMonitorSelectorNilUsesHelmValues: false
         serviceMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false

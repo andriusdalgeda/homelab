@@ -45,6 +45,8 @@ These values are pulled from Azure Key Vault by `ExternalSecret` resources.
 | `AZP-POOL` | `azdo-agent/azdo-agent-credentials`, `flux-system/azdo-image-repository` | Azure DevOps agent pool and Flux substitution | Azure DevOps pool name from Organization settings -> Agent pools. |
 | `GRAFANA-ADMIN-USER` | `monitoring/grafana-admin-credentials` | Grafana admin login | Choose the admin username you want Grafana to use. |
 | `GRAFANA-ADMIN-PASSWORD` | `monitoring/grafana-admin-credentials` | Grafana admin login | Generate a strong password and store it in Key Vault. |
+| `PROXMOX-PVE-EXPORTER-CONFIG` | `monitoring/pve-exporter-config` | Proxmox API credentials for the PVE exporter | A multi-line `pve.yml` file containing a read-only Proxmox API token. |
+| `PROXMOX-PROMETHEUS-SCRAPE-CONFIG` | `monitoring/prometheus-additional-scrape-configs` | Prometheus PVE scrape job | A multi-line Prometheus job that names every Proxmox API endpoint. |
 | `TUNNEL-TOKEN` | `cloudflared/cloudflared-secret` | Cloudflare Tunnel | Cloudflare Zero Trust dashboard -> Networks -> Tunnels -> tunnel token. |
 | `GIT-TOKEN` | `obsidian/git-credentials` | Obsidian Git backup/restore jobs | Git provider PAT with access to the Obsidian backup repository. |
 | `TAILSCALE-OAUTH-CLIENT-ID` | `tailscale/tailscale-operator-oauth` | Tailscale Kubernetes Operator | Tailscale admin console -> Settings -> OAuth clients. Create an OAuth client with write scopes for `General/Services`, `Devices/Core`, and `Keys/Auth Keys`, tagged as `tag:k8s-operator`. |
@@ -71,9 +73,76 @@ External Secrets creates these Kubernetes Secrets from the Key Vault values:
 | `cloudflared-secret` | `cloudflared` | `TUNNEL-TOKEN` | `cluster/apps/cloudflared/secrets/tunnel.yaml` |
 | `git-credentials` | `obsidian` | `GIT-TOKEN` | `cluster/apps/obsidian/secrets/git.yaml` |
 | `grafana-admin-credentials` | `monitoring` | `admin-user`, `admin-password` | `cluster/infrastructure/monitoring/secrets/grafana.yaml` |
+| `pve-exporter-config` | `monitoring` | `pve.yml` | `cluster/infrastructure/monitoring/secrets/pve-exporter.yaml` |
+| `prometheus-additional-scrape-configs` | `monitoring` | `pve.yaml` | `cluster/infrastructure/monitoring/secrets/pve-exporter.yaml` |
 | `tailscale-operator-oauth` | `tailscale` | `clientId`, `clientSecret` | `cluster/infrastructure/tailscale/secrets/oauth.yaml` |
 | `cloud-credentials` | `velero` | `cloud` | `cluster/infrastructure/velero/secrets/velero.yaml` |
 | `velero-helm-values` | `velero` | `values.yaml` | `cluster/infrastructure/velero/secrets/velero.yaml` |
+
+## Proxmox Monitoring Configuration
+
+Create a read-only `prometheus@pve` API token with the `PVEAuditor` role at
+`/`. Store the following values as plain multi-line text in Azure Key Vault.
+Replace the token name and Proxmox addresses with your own values.
+
+`PROXMOX-PVE-EXPORTER-CONFIG`:
+
+```yaml
+default:
+  user: prometheus@pve
+  token_name: prometheus
+  token_value: "<Proxmox API token secret>"
+  verify_ssl: true
+```
+
+`PROXMOX-PROMETHEUS-SCRAPE-CONFIG` collects shared cluster metrics from one
+cluster node and node-specific metrics from every node. This avoids collecting
+the same cluster-wide metrics repeatedly:
+
+```yaml
+- job_name: pve-cluster
+  scrape_interval: 60s
+  scrape_timeout: 30s
+  metrics_path: /pve
+  params:
+    module: [default]
+    cluster: ['1']
+    node: ['0']
+  static_configs:
+    - targets:
+        - pve-01.example.internal
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: pve-exporter.monitoring.svc.cluster.local:9221
+
+- job_name: pve-node
+  scrape_interval: 60s
+  scrape_timeout: 30s
+  metrics_path: /pve
+  params:
+    module: [default]
+    cluster: ['0']
+    node: ['1']
+  static_configs:
+    - targets:
+        - pve-01.example.internal
+        - pve-02.example.internal
+        - pve-03.example.internal
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: pve-exporter.monitoring.svc.cluster.local:9221
+```
+
+The exporter pod must be able to reach each Proxmox API endpoint on TCP 8006.
+Keep `verify_ssl: true` when Proxmox has a certificate trusted by the exporter.
 
 ## Useful Checks
 
