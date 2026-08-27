@@ -18,3 +18,4 @@ resources:
   - forgejo.yaml
   - paperless.yaml
   - n8n.yaml
+  - glance.yaml

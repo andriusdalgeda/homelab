@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       annotations:
-        config.cloudflared.io/revision: flux-web
+        config.cloudflared.io/revision: home-glance
       labels:
         app: cloudflared
     spec:

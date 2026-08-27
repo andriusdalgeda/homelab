@@ -13,4 +13,5 @@ resources:
   - ./abs
   # - ./forgejo
   - ./paperless
+  - ./glance
   # - ./n8n

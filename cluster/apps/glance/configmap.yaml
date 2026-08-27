@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glance-config
+  namespace: glance
+data:
+  glance.yml: |
+    server:
+      proxied: true
+
+    branding:
+      app-name: Home
+      logo-text: H
+      hide-footer: true
+
+    pages:
+      - name: Home
+        hide-desktop-navigation: true
+        columns:
+          - size: small
+            widgets:
+              - type: clock
+                hour-format: 24h
+                timezones:
+                  - timezone: Europe/London
+                    label: London
+              - type: weather
+                location: London, United Kingdom
+                units: metric
+                hour-format: 24h
+
+          - size: full
+            widgets:
+              - type: bookmarks
+                groups:
+                  - title: Homelab
+                    links:
+                      - title: Uptime Kuma
+                        url: https://uptime.andriusdalgeda.com
+                        icon: si:uptimekuma
+                      - title: Grafana
+                        url: https://grafana.andriusdalgeda.com
+                        icon: si:grafana
+                      - title: Flux
+                        url: https://flux.andriusdalgeda.com
+                        icon: si:flux
+                      - title: Obsidian
+                        url: https://obsidian.andriusdalgeda.com
+                        icon: si:obsidian
+                  - title: Media
+                    links:
+                      - title: Audiobookshelf
+                        url: https://abs.andriusdalgeda.com
+                        icon: si:audiobookshelf
+                      - title: Seerr
+                        url: https://seerr.andriusdalgeda.com
+                        icon: si:seerr
+                  - title: Utilities
+                    links:
+                      - title: Stirling PDF
+                        url: https://pdf.andriusdalgeda.com
+                        icon: si:stirlingpdf
+
+          - size: small
+            widgets:
+              - type: monitor
+                cache: 1m
+                title: Public services
+                style: compact
+                sites:
+                  - title: Uptime Kuma
+                    url: https://uptime.andriusdalgeda.com
+                    icon: si:uptimekuma
+                  - title: Grafana
+                    url: https://grafana.andriusdalgeda.com
+                    icon: si:grafana
+                  - title: Audiobookshelf
+                    url: https://abs.andriusdalgeda.com
+                    icon: si:audiobookshelf
