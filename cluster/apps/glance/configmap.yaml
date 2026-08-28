@@ -118,6 +118,16 @@ data:
         columns:
           - size: full
             widgets:
+              - type: releases
+                title: Releases
+                limit: 10
+                collapse-after: 5
+                repositories:
+                  - grafana/grafana
+                  - kubernetes/kubernetes
+
+          - size: full
+            widgets:
               - type: rss
                 title: Platform updates
                 limit: 20
