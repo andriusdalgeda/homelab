@@ -119,10 +119,14 @@ data:
           - size: full
             widgets:
               - type: rss
-                title: Microsoft product updates
+                title: Platform updates
                 limit: 20
                 collapse-after: 10
                 cache: 6h
                 feeds:
-                  - url: https://developer.microsoft.com/api/changelog/rss
-                    title: Microsoft Developer Changelog
+                  - url: https://www.microsoft.com/releasecommunications/api/v2/azure/rss
+                    title: Azure updates
+                  - url: https://devblogs.microsoft.com/devops/feed/
+                    title: Azure DevOps Blog
+                  - url: https://kubernetes.io/feed.xml
+                    title: Kubernetes Blog
