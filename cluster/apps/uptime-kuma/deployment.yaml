@@ -23,8 +23,6 @@ spec:
               value: "0022"
             - name: TZ
               value: "UTC"
-            - name: UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN
-              value: true
           volumeMounts:
             - name: data
               mountPath: /app/data
