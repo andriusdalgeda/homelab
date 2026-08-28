@@ -54,7 +54,7 @@ data:
                         icon: si:audiobookshelf
                       - title: Seerr
                         url: https://seerr.andriusdalgeda.com
-                        icon: si:overseerr
+                        icon: di:seerr
               - type: custom-api
                 title: Uptime Kuma
                 title-url: https://status.andriusdalgeda.com
