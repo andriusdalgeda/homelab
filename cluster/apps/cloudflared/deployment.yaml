@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       annotations:
-        config.cloudflared.io/revision: home-glance
+        config.cloudflared.io/revision: home-linkwarden
       labels:
         app: cloudflared
     spec:

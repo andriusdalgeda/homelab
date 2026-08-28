@@ -49,6 +49,10 @@ These values are pulled from Azure Key Vault by `ExternalSecret` resources.
 | `PROXMOX-PROMETHEUS-SCRAPE-CONFIG` | `monitoring/prometheus-additional-scrape-configs` | Prometheus PVE scrape job | A single-line YAML configuration naming every Proxmox API endpoint. |
 | `TUNNEL-TOKEN` | `cloudflared/cloudflared-secret` | Cloudflare Tunnel | Cloudflare Zero Trust dashboard -> Networks -> Tunnels -> tunnel token. |
 | `GIT-TOKEN` | `obsidian/git-credentials` | Obsidian Git backup/restore jobs | Git provider PAT with access to the Obsidian backup repository. |
+| `LINKWARDEN-NEXTAUTH-SECRET` | `linkwarden/linkwarden-credentials` | Linkwarden session signing | Generate a unique, high-entropy secret. |
+| `LINKWARDEN-POSTGRES-PASSWORD` | `linkwarden/linkwarden-credentials` | Linkwarden PostgreSQL | Generate a URL-safe, high-entropy password. |
+| `LINKWARDEN-MEILI-MASTER-KEY` | `linkwarden/linkwarden-credentials` | Linkwarden Meilisearch | Generate a unique, high-entropy secret. |
+| `LINKWARDEN-API-KEY` | `glance/glance-linkwarden` | Glance Linkwarden widget | Create an API key in Linkwarden after the first user is set up. |
 | `TAILSCALE-OAUTH-CLIENT-ID` | `tailscale/tailscale-operator-oauth` | Tailscale Kubernetes Operator | Tailscale admin console -> Settings -> OAuth clients. Create an OAuth client with write scopes for `General/Services`, `Devices/Core`, and `Keys/Auth Keys`, tagged as `tag:k8s-operator`. |
 | `TAILSCALE-OAUTH-CLIENT-SECRET` | `tailscale/tailscale-operator-oauth` | Tailscale Kubernetes Operator | Client secret for the same Tailscale OAuth client. Store the plain secret value. |
 | `UPTIME-KUMA-AZDO-PUSH-URL` | `azdo-agent/azdo-agent-monitoring` | Uptime Kuma push monitor for Azure DevOps agent health | Create a Push monitor in Uptime Kuma and store its full internal push URL, for example `http://uptime-kuma.uptime-kuma.svc.cluster.local:3001/api/push/<token>`. |
@@ -72,6 +76,8 @@ External Secrets creates these Kubernetes Secrets from the Key Vault values:
 | `azdo-image-repository` | `flux-system` | `IMAGE_REPO`, `AZP_POOL` | `cluster/infrastructure/external-secrets-resources/azdo-image-repository.yaml` |
 | `cloudflared-secret` | `cloudflared` | `TUNNEL-TOKEN` | `cluster/apps/cloudflared/secrets/tunnel.yaml` |
 | `git-credentials` | `obsidian` | `GIT-TOKEN` | `cluster/apps/obsidian/secrets/git.yaml` |
+| `linkwarden-credentials` | `linkwarden` | `NEXTAUTH_SECRET`, `POSTGRES_PASSWORD`, `MEILI_MASTER_KEY` | `cluster/apps/linkwarden/secrets/credentials.yaml` |
+| `glance-linkwarden` | `glance` | `LINKWARDEN_API_KEY` | `cluster/apps/glance/secrets/linkwarden.yaml` |
 | `grafana-admin-credentials` | `monitoring` | `admin-user`, `admin-password` | `cluster/infrastructure/monitoring/secrets/grafana.yaml` |
 | `pve-exporter-config` | `monitoring` | `pve.yml` | `cluster/infrastructure/monitoring/secrets/pve-exporter.yaml` |
 | `prometheus-additional-scrape-configs` | `monitoring` | `pve.yaml` | `cluster/infrastructure/monitoring/secrets/pve-exporter.yaml` |

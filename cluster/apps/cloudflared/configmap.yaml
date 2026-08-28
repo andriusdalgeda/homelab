@@ -30,4 +30,6 @@ data:
         service: http://forgejo-http.forgejo.svc.cluster.local:6000
       - hostname: flux.andriusdalgeda.com
         service: http://flux-web.flux-system.svc.cluster.local:9080
+      - hostname: linkwarden.andriusdalgeda.com
+        service: http://linkwarden.linkwarden.svc.cluster.local:3000
       - service: http_status:404

@@ -19,3 +19,4 @@ resources:
   - paperless.yaml
   - n8n.yaml
   - glance.yaml
+  - linkwarden.yaml
