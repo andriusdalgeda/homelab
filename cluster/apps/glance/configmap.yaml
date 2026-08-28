@@ -10,8 +10,12 @@ data:
 
     branding:
       app-name: Home
-      logo-text: H
       hide-footer: true
+
+    theme:
+      background-color: 50 1 6
+      primary-color: 24 97 58
+      negative-color: 209 88 54
 
     pages:
       - name: Home
