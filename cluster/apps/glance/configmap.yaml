@@ -51,12 +51,7 @@ data:
                         icon: si:audiobookshelf
                       - title: Seerr
                         url: https://seerr.andriusdalgeda.com
-                        icon: si:seerr
-                  - title: Utilities
-                    links:
-                      - title: Stirling PDF
-                        url: https://pdf.andriusdalgeda.com
-                        icon: si:stirlingpdf
+                        icon: si:overseerr
               - type: custom-api
                 title: Uptime Kuma
                 title-url: https://status.andriusdalgeda.com
@@ -119,3 +114,16 @@ data:
                     {{ end }}
                   </ul>
                   {{ end }}
+
+      - name: Work
+        columns:
+          - size: full
+            widgets:
+              - type: rss
+                title: Microsoft product updates
+                limit: 20
+                collapse-after: 10
+                cache: 6h
+                feeds:
+                  - url: https://developer.microsoft.com/api/changelog/rss
+                    title: Microsoft Developer Changelog
