@@ -47,6 +47,9 @@ data:
                       - title: Flux
                         url: https://flux.andriusdalgeda.com
                         icon: si:flux
+                      - title: Forgejo
+                        url: https://forgejo.andriusdalgeda.com/
+                        icon: si:forgejo
                   - title: Media
                     links:
                       - title: Audiobookshelf
