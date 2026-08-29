@@ -47,9 +47,6 @@ data:
                       - title: Flux
                         url: https://flux.andriusdalgeda.com
                         icon: si:flux
-                      - title: Linkwarden
-                        url: https://linkwarden.andriusdalgeda.com
-                        icon: di:linkwarden
                   - title: Media
                     links:
                       - title: Audiobookshelf
