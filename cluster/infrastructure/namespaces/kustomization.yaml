@@ -11,7 +11,7 @@ resources:
   - monitoring.yaml
   - tailscale.yaml
   - prowlarr.yaml
-  - stirling-pdf.yaml
+  - bentopdf.yaml
   - azdo-agent.yaml
   - seerr.yaml
   - abs.yaml

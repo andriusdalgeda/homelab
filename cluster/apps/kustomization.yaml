@@ -6,7 +6,7 @@ resources:
   - ./cloudflared
   - ./obsidian
   - ./prowlarr
-  - ./stirling-pdf
+  - ./bentopdf
   - ./flaresolverr
   # - ./azdo-agent
   - ./seerr
