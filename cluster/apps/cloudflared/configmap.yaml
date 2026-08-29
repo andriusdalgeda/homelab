@@ -20,8 +20,6 @@ data:
         service: http://prowlarr.prowlarr.svc.cluster.local:9696
       - hostname: seerr.andriusdalgeda.com
         service: http://seerr.seerr.svc.cluster.local:3500
-      - hostname: cobalt.andriusdalgeda.com
-        service: http://cobalt.cobalt.svc.cluster.local:4000
       - hostname: pdf.andriusdalgeda.com
         service: http://bentopdf.bentopdf.svc.cluster.local:8080
       - hostname: abs.andriusdalgeda.com

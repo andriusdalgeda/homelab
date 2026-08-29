@@ -11,7 +11,7 @@ resources:
   # - ./azdo-agent
   - ./seerr
   - ./abs
-  # - ./forgejo
+  - ./forgejo
   - ./paperless
   - ./glance
   - ./linkwarden
