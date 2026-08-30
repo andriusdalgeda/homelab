@@ -14,5 +14,5 @@ resources:
   - ./forgejo
   - ./paperless
   - ./glance
-  - ./linkwarden
+  # - ./linkwarden
   # - ./n8n
